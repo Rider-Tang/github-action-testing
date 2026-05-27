@@ -23,4 +23,12 @@ jobs:
       with:
         webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
         steps: >-
-          ${{ toJson(fromJson('{"simple-test":' + toJson(steps.simple-test) + '}')) }}
+          {
+            "simple-test": {
+              "outputs": {
+                "output": "Hello from GitHub Actions!"
+              },
+              "outcome": "success",
+              "conclusion": "success"
+            }
+          }

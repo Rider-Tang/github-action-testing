@@ -48,7 +48,7 @@ function postJson(url, payload) {
 async function run() {
   try {
     const webhookUrl = getInput('webhook_url', true);
-    const title = getInput('title') || 'GitHub Actions Notification';
+    const providedTitle = getInput('title');
     const message = getInput('message') || '';
     const detailsFile = getInput('details_file');
     const details = getInput('details');
@@ -58,7 +58,7 @@ async function run() {
     const bodyElements = [
       {
         type: 'TextBlock',
-        text: title,
+        text: providedTitle || 'GitHub Actions Notification',
         weight: 'bolder',
         size: 'medium'
       }
@@ -77,6 +77,20 @@ async function run() {
       try {
         const sarifContent = JSON.parse(fs.readFileSync(sarifFile, 'utf8'));
         const results = sarifContent.runs?.[0]?.results || [];
+
+        // Generate dynamic title from SARIF result count if caller did not provide one
+        const dynamicTitle = results.length > 0
+          ? `SCA Scan Result: ${results.length} CVEs`
+          : 'SCA Scan Result: No CVEs found';
+        const finalTitle = providedTitle || dynamicTitle;
+
+        // Replace the first TextBlock (the title) with the dynamic one
+        bodyElements[0] = {
+          type: 'TextBlock',
+          text: finalTitle,
+          weight: 'bolder',
+          size: 'medium'
+        };
 
         if (results.length > 0) {
           bodyElements.push({

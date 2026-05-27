@@ -16,8 +16,7 @@ jobs:
     - name: Run a simple test
       id: simple-test
       run: |
-        cat sca-scanning-example.txt > /tmp/sca-output.txt
-        cp sample-sca-results.sarif /tmp/sca-results.sarif
+        cp sample-sca-results.sarif "${{ runner.temp }}/sca-results.sarif"
         echo "message=SCA scan completed with 35 CVEs" >> "$GITHUB_OUTPUT"
 
     - name: Microsoft Teams Notification (Custom Action)
@@ -27,4 +26,4 @@ jobs:
         webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
         title: 'SCA Scan Result'
         message: ${{ steps.simple-test.outputs.message }}
-        sarif_file: /tmp/sca-results.sarif
+        sarif_file: ${{ runner.temp }}/sca-results.sarif

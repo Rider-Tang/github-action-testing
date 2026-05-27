@@ -22,13 +22,17 @@ jobs:
       if: always()
       with:
         webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
-        steps: >-
-          {
-            "simple-test": {
-              "outputs": {
-                "output": "Hello from GitHub Actions!"
-              },
-              "outcome": "success",
-              "conclusion": "success"
+        title: 'Test output: Hello from GitHub Actions!'
+        actions: >-
+          [
+            {
+              "type": "Action.OpenUrl",
+              "title": "View Run",
+              "url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            },
+            {
+              "type": "Action.OpenUrl",
+              "title": "Repository",
+              "url": "https://github.com/${{ github.repository }}"
             }
-          }
+          ]

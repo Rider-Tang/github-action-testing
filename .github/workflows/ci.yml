@@ -15,24 +15,48 @@ jobs:
 
     - name: Run a simple test
       id: simple-test
-      run: echo "Hello from GitHub Actions!"
+      run: |
+        cat sca-scanning-example.txt
+        echo "message=SCA scan completed with 35 CVEs" >> "$GITHUB_OUTPUT"
 
     - name: Microsoft Teams Notification
       uses: skitionek/notify-microsoft-teams@master
       if: always()
       with:
         webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
-        title: 'Test output: Hello from GitHub Actions!'
-        actions: >-
-          [
-            {
-              "type": "Action.OpenUrl",
-              "title": "View Run",
-              "url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-            },
-            {
-              "type": "Action.OpenUrl",
-              "title": "Repository",
-              "url": "https://github.com/${{ github.repository }}"
-            }
-          ]
+        raw: >-
+          {
+            "type": "message",
+            "attachments": [
+              {
+                "contentType": "application/vnd.microsoft.card.adaptive",
+                "content": {
+                  "type": "AdaptiveCard",
+                  "body": [
+                    {
+                      "type": "TextBlock",
+                      "text": "SCA Scan Result: ${{ steps.simple-test.outputs.message }}",
+                      "weight": "bolder",
+                      "size": "medium"
+                    },
+                    {
+                      "type": "TextBlock",
+                      "text": "Click the buttons below for details."
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": "Action.OpenUrl",
+                      "title": "View Run",
+                      "url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                    },
+                    {
+                      "type": "Action.OpenUrl",
+                      "title": "Repository",
+                      "url": "https://github.com/${{ github.repository }}"
+                    }
+                  ]
+                }
+              }
+            ]
+          }

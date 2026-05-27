@@ -16,7 +16,7 @@ jobs:
     - name: Run a simple test
       id: simple-test
       run: |
-        cp sample-sca-results.sarif "${{ runner.temp }}/sca-results.sarif"
+        cp samples/sample-sca-results.sarif "${{ runner.temp }}/sca-results.sarif"
 
     - name: Microsoft Teams Notification
       uses: ./

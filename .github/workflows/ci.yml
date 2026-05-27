@@ -14,7 +14,10 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Run a simple test
-      run: echo "Hello from GitHub Actions!"
+      id: simple-test
+      run: |
+        echo "Hello from GitHub Actions!"
+        echo "test_output=Hello from GitHub Actions!" >> $GITHUB_OUTPUT
 
     - name: Microsoft Teams Notification
       uses: skitionek/notify-microsoft-teams@master
@@ -24,3 +27,4 @@ jobs:
         needs: ${{ toJson(needs) }}
         job: ${{ toJson(job) }}
         steps: ${{ toJson(steps) }}
+        title: 'Test output: ${{ steps.simple-test.outputs.test_output }}'

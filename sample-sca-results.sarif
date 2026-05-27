@@ -1,0 +1,145 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Prisma Cloud SCA",
+          "version": "x.x.x",
+          "informationUri": "https://prisma.paloaltonetworks.com/"
+        }
+      },
+      "results": [
+        {
+          "ruleId": "CVE-2021-33623",
+          "level": "error",
+          "message": {
+            "text": "trim-newlines@1.0.0 is vulnerable to CVE-2021-33623 (high). Fixed in 3.0.1."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "package-lock.json"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "properties": {
+            "package": "trim-newlines",
+            "currentVersion": "1.0.0",
+            "fixedVersion": "3.0.1",
+            "severity": "high",
+            "cve": "CVE-2021-33623"
+          }
+        },
+        {
+          "ruleId": "CVE-2020-7610",
+          "level": "error",
+          "message": {
+            "text": "bson@1.0.9 is vulnerable to CVE-2020-7610 (high). Fixed in 1.1.4."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "package-lock.json"
+                }
+              }
+            }
+          ],
+          "properties": {
+            "package": "bson",
+            "currentVersion": "1.0.9",
+            "fixedVersion": "1.1.4",
+            "severity": "high",
+            "cve": "CVE-2020-7610"
+          }
+        },
+        {
+          "ruleId": "PRISMA-2021-0154",
+          "level": "warning",
+          "message": {
+            "text": "ramda@0.24.1 has a medium severity issue (PRISMA-2021-0154). No fixed version available."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "package-lock.json"
+                }
+              }
+            }
+          ],
+          "properties": {
+            "package": "ramda",
+            "currentVersion": "0.24.1",
+            "fixedVersion": "N/A",
+            "severity": "medium",
+            "cve": "PRISMA-2021-0154"
+          }
+        },
+        {
+          "ruleId": "CVE-2017-16042",
+          "level": "error",
+          "message": {
+            "text": "growl@1.9.2 is vulnerable to CVE-2017-16042 (critical). Fixed in 1.10.0."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "package-lock.json"
+                }
+              }
+            }
+          ],
+          "properties": {
+            "package": "growl",
+            "currentVersion": "1.9.2",
+            "fixedVersion": "1.10.0",
+            "severity": "critical",
+            "cve": "CVE-2017-16042"
+          }
+        },
+        {
+          "ruleId": "CVE-2019-16775",
+          "level": "error",
+          "message": {
+            "text": "npm@3.10.10 is vulnerable to CVE-2019-16775 (high). Fixed in 6.13.3."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "package-lock.json"
+                }
+              }
+            }
+          ],
+          "properties": {
+            "package": "npm",
+            "currentVersion": "3.10.10",
+            "fixedVersion": "6.13.3",
+            "severity": "high",
+            "cve": "CVE-2019-16775"
+          }
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "package-lock.json"
+          },
+          "description": {
+            "text": "NPM package lock file"
+          }
+        }
+      ]
+    }
+  ]
+}

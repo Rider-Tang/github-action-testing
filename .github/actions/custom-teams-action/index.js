@@ -52,14 +52,7 @@ async function run() {
     const message = getInput('message') || '';
     const detailsFile = getInput('details_file');
     const details = getInput('details');
-
-    // Read details from file if provided and readable, otherwise use the details input
-    let detailsContent = '';
-    if (detailsFile && fs.existsSync(detailsFile)) {
-      detailsContent = fs.readFileSync(detailsFile, 'utf8');
-    } else if (details) {
-      detailsContent = details;
-    }
+    const sarifFile = getInput('sarif_file');
 
     // Build Adaptive Card body elements
     const bodyElements = [
@@ -79,9 +72,66 @@ async function run() {
       });
     }
 
-    if (detailsContent) {
-      // Escape triple backticks inside the content to avoid breaking the markdown fence
+    // === SARIF handling (preferred for structured security findings) ===
+    if (sarifFile && fs.existsSync(sarifFile)) {
+      try {
+        const sarifContent = JSON.parse(fs.readFileSync(sarifFile, 'utf8'));
+        const results = sarifContent.runs?.[0]?.results || [];
+
+        // Create a summary FactSet (max 10 findings to keep the card readable)
+        const facts = results.slice(0, 10).map((result) => {
+          const props = result.properties || {};
+          const severity = props.severity || result.level || 'unknown';
+          const pkg = props.package || '';
+          const fixed = props.fixedVersion ? ` → ${props.fixedVersion}` : '';
+          return {
+            title: `${severity.toUpperCase()}`,
+            value: `${pkg} ${props.cve || result.ruleId || ''}${fixed}`
+          };
+        });
+
+        if (facts.length > 0) {
+          bodyElements.push({
+            type: 'TextBlock',
+            text: `Findings (${results.length} total)`,
+            weight: 'bolder',
+            spacing: 'medium'
+          });
+          bodyElements.push({
+            type: 'FactSet',
+            facts: facts
+          });
+        }
+
+        if (results.length > 10) {
+          bodyElements.push({
+            type: 'TextBlock',
+            text: `... and ${results.length - 10} more findings. See full report in the Actions log.`,
+            spacing: 'small',
+            isSubtle: true
+          });
+        }
+      } catch (e) {
+        console.error(`::warning::Failed to parse SARIF file: ${e.message}`);
+      }
+    } else if (detailsFile && fs.existsSync(detailsFile)) {
+      // Fallback: raw text file (original behavior)
+      const detailsContent = fs.readFileSync(detailsFile, 'utf8');
       const safeDetails = detailsContent.replace(/```/g, '`` `');
+      bodyElements.push({
+        type: 'TextBlock',
+        text: 'Details:',
+        weight: 'bolder',
+        spacing: 'medium'
+      });
+      bodyElements.push({
+        type: 'TextBlock',
+        text: '```' + safeDetails + '```',
+        fontType: 'monospace',
+        spacing: 'small'
+      });
+    } else if (details) {
+      const safeDetails = details.replace(/```/g, '`` `');
       bodyElements.push({
         type: 'TextBlock',
         text: 'Details:',

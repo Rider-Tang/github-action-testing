@@ -19,7 +19,11 @@ inputs:
     required: false
     default: ''
   details_file:
-    description: 'Path to a file containing multi-line text (preferred for large output). Overrides details.'
+    description: 'Path to a file containing multi-line text (preferred for large output). Overrides details. Ignored when sarif_file is provided.'
+    required: false
+    default: ''
+  sarif_file:
+    description: 'Path to a SARIF file. When provided, findings are rendered as a compact FactSet (recommended for security scans).'
     required: false
     default: ''
 

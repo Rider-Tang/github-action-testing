@@ -26,6 +26,10 @@ inputs:
     description: 'Path to a SARIF file. When provided, findings are rendered as a compact FactSet (recommended for security scans).'
     required: false
     default: ''
+  details_url:
+    description: 'Optional URL for the "View Details" button. Falls back to a default Prisma Cloud URL if not provided.'
+    required: false
+    default: ''
 
 runs:
   using: 'node20'

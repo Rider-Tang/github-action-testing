@@ -53,6 +53,7 @@ async function run() {
     const detailsFile = getInput('details_file');
     const details = getInput('details');
     const sarifFile = getInput('sarif_file');
+    const detailsUrl = getInput('details_url');
 
     // Build Adaptive Card body elements
     const bodyElements = [
@@ -184,6 +185,11 @@ async function run() {
             actions: [
               {
                 type: 'Action.OpenUrl',
+                title: 'View Details',
+                url: detailsUrl || 'https://app.sg.prismacloud.io/home/appsec/projects'
+              },
+              {
+                type: 'Action.OpenUrl',
                 title: 'View Run',
                 url: `https://github.com/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`
               },
@@ -191,7 +197,7 @@ async function run() {
                 type: 'Action.OpenUrl',
                 title: 'Repository',
                 url: `https://github.com/${process.env.GITHUB_REPOSITORY}`
-              }
+              },
             ]
           }
         }

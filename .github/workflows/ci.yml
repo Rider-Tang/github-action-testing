@@ -23,5 +23,5 @@ jobs:
       if: always()
       with:
         webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
-        title: "test title"
+        title: "Prisma Cloud SCA Scanning Results"
         sarif_file: ${{ runner.temp }}/sca-results.sarif

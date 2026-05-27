@@ -1,6 +1,6 @@
 name: 'Prisma Cloud / SARIF to Microsoft Teams'
 description: 'Send customizable Adaptive Card notifications to Microsoft Teams from GitHub Actions, with rich support for SARIF security findings.'
-author: 'Your Organization'
+author: 'cic-itd'
 
 inputs:
   webhook_url:

@@ -33,6 +33,7 @@
             "package": "trim-newlines",
             "currentVersion": "1.0.0",
             "fixedVersion": "3.0.1",
+            "compliantVersion": "3.0.1",
             "severity": "high",
             "cve": "CVE-2021-33623"
           }
@@ -56,6 +57,7 @@
             "package": "bson",
             "currentVersion": "1.0.9",
             "fixedVersion": "1.1.4",
+            "compliantVersion": "1.1.4",
             "severity": "high",
             "cve": "CVE-2020-7610"
           }
@@ -79,6 +81,7 @@
             "package": "ramda",
             "currentVersion": "0.24.1",
             "fixedVersion": "N/A",
+            "compliantVersion": "None",
             "severity": "medium",
             "cve": "PRISMA-2021-0154"
           }
@@ -102,6 +105,7 @@
             "package": "growl",
             "currentVersion": "1.9.2",
             "fixedVersion": "1.10.0",
+            "compliantVersion": "1.10.0",
             "severity": "critical",
             "cve": "CVE-2017-16042"
           }
@@ -125,6 +129,7 @@
             "package": "npm",
             "currentVersion": "3.10.10",
             "fixedVersion": "6.13.3",
+            "compliantVersion": "6.14.6",
             "severity": "high",
             "cve": "CVE-2019-16775"
           }

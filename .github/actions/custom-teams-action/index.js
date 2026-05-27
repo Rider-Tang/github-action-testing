@@ -78,37 +78,49 @@ async function run() {
         const sarifContent = JSON.parse(fs.readFileSync(sarifFile, 'utf8'));
         const results = sarifContent.runs?.[0]?.results || [];
 
-        // Create a summary FactSet (max 10 findings to keep the card readable)
-        const facts = results.slice(0, 10).map((result) => {
-          const props = result.properties || {};
-          const severity = props.severity || result.level || 'unknown';
-          const pkg = props.package || '';
-          const fixed = props.fixedVersion ? ` → ${props.fixedVersion}` : '';
-          return {
-            title: `${severity.toUpperCase()}`,
-            value: `${pkg} ${props.cve || result.ruleId || ''}${fixed}`
-          };
-        });
-
-        if (facts.length > 0) {
+        if (results.length > 0) {
           bodyElements.push({
             type: 'TextBlock',
             text: `Findings (${results.length} total)`,
             weight: 'bolder',
             spacing: 'medium'
           });
-          bodyElements.push({
-            type: 'FactSet',
-            facts: facts
-          });
-        }
 
-        if (results.length > 10) {
-          bodyElements.push({
-            type: 'TextBlock',
-            text: `... and ${results.length - 10} more findings. See full report in the Actions log.`,
-            spacing: 'small',
-            isSubtle: true
+          // Render one FactSet per finding (no hard limit).
+          // Each FactSet shows the six columns as individual title/value pairs,
+          // matching the original table structure.
+          results.forEach((result, index) => {
+            const props = result.properties || {};
+            const severity = (props.severity || result.level || 'unknown').toUpperCase();
+            const pkg = props.package || '';
+            const cve = props.cve || result.ruleId || '';
+            const current = props.currentVersion || '';
+            const fixed = props.fixedVersion || '';
+            const compliant = props.compliantVersion || '';
+
+            const findingFacts = [
+              { title: 'Package',            value: pkg },
+              { title: 'CVE ID',             value: cve },
+              { title: 'Severity',           value: severity },
+              { title: 'Current version',    value: current },
+              { title: 'Fixed version',      value: fixed },
+              { title: 'Compliant version',  value: compliant }
+            ];
+
+            // Add a small separator between findings (except before the first one)
+            if (index > 0) {
+              bodyElements.push({
+                type: 'TextBlock',
+                text: '---',
+                spacing: 'medium',
+                isSubtle: true
+              });
+            }
+
+            bodyElements.push({
+              type: 'FactSet',
+              facts: findingFacts
+            });
           });
         }
       } catch (e) {

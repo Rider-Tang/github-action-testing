@@ -15,16 +15,12 @@ jobs:
 
     - name: Run a simple test
       id: simple-test
-      run: |
-        echo "Hello from GitHub Actions!"
-        echo "test_output=Hello from GitHub Actions!" >> $GITHUB_OUTPUT
+      run: echo "Hello from GitHub Actions!"
 
     - name: Microsoft Teams Notification
       uses: skitionek/notify-microsoft-teams@master
       if: always()
       with:
         webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
-        needs: ${{ toJson(needs) }}
-        job: ${{ toJson(job) }}
-        steps: ${{ toJson(steps) }}
-        title: 'Test output: ${{ steps.simple-test.outputs.test_output }}'
+        steps: >-
+          ${{ toJson(fromJson('{"simple-test":' + toJson(steps.simple-test) + '}')) }}

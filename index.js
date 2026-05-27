@@ -102,8 +102,7 @@ async function run() {
           });
 
           // Render one FactSet per finding (no hard limit).
-          // Each FactSet shows the six columns as individual title/value pairs,
-          // matching the original table structure.
+          // Each FactSet shows the six columns as individual title/value pairs.
           results.forEach((result, index) => {
             const props = result.properties || {};
             const severity = (props.severity || result.level || 'unknown').toUpperCase();
@@ -122,7 +121,6 @@ async function run() {
               { title: 'Compliant version',  value: compliant }
             ];
 
-            // Add a small separator between findings (except before the first one)
             if (index > 0) {
               bodyElements.push({
                 type: 'TextBlock',
@@ -142,7 +140,6 @@ async function run() {
         console.error(`::warning::Failed to parse SARIF file: ${e.message}`);
       }
     } else if (detailsFile && fs.existsSync(detailsFile)) {
-      // Fallback: raw text file (original behavior)
       const detailsContent = fs.readFileSync(detailsFile, 'utf8');
       const safeDetails = detailsContent.replace(/```/g, '`` `');
       bodyElements.push({
@@ -197,7 +194,7 @@ async function run() {
                 type: 'Action.OpenUrl',
                 title: 'Repository',
                 url: `https://github.com/${process.env.GITHUB_REPOSITORY}`
-              },
+              }
             ]
           }
         }

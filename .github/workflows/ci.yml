@@ -18,8 +18,8 @@ jobs:
       run: |
         cp sample-sca-results.sarif "${{ runner.temp }}/sca-results.sarif"
 
-    - name: Microsoft Teams Notification (Custom Action)
-      uses: ./.github/actions/custom-teams-action
+    - name: Microsoft Teams Notification
+      uses: ./
       if: always()
       with:
         webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}

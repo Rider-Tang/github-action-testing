@@ -1,0 +1,36 @@
+name: 'Prisma Cloud / SARIF to Microsoft Teams'
+description: 'Send customizable Adaptive Card notifications to Microsoft Teams from GitHub Actions, with rich support for SARIF security findings.'
+author: 'Your Organization'
+
+inputs:
+  webhook_url:
+    description: 'Teams webhook URL from Power Automate "Send webhook alerts to a channel"'
+    required: true
+  title:
+    description: 'Main title text for the Adaptive Card. If omitted when using sarif_file, a dynamic title is generated from the result count.'
+    required: false
+    default: ''
+  message:
+    description: 'Optional short message / summary line shown below the title.'
+    required: false
+    default: ''
+  details:
+    description: 'Optional multi-line text (placed in a code block). Ignored when sarif_file or details_file is provided.'
+    required: false
+    default: ''
+  details_file:
+    description: 'Path to a file containing multi-line text. Ignored when sarif_file is provided.'
+    required: false
+    default: ''
+  sarif_file:
+    description: 'Path to a SARIF file. When provided, findings are rendered as one FactSet per result (recommended for security scans).'
+    required: false
+    default: ''
+  details_url:
+    description: 'Optional URL for the "View Details" button. Falls back to a default URL if not provided.'
+    required: false
+    default: ''
+
+runs:
+  using: 'node20'
+  main: 'index.js'

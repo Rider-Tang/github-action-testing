@@ -1,0 +1,28 @@
+name: 'Send Microsoft Teams Notification (Custom)'
+description: 'Send a customizable Adaptive Card to a Microsoft Teams Power Automate webhook'
+author: 'Custom'
+
+inputs:
+  webhook_url:
+    description: 'Teams webhook URL from Power Automate "Send webhook alerts to a channel"'
+    required: true
+  title:
+    description: 'Main title text for the Adaptive Card'
+    required: false
+    default: 'GitHub Actions Notification'
+  message:
+    description: 'Short message / summary line (recommended to keep under 200 chars)'
+    required: false
+    default: ''
+  details:
+    description: 'Optional multi-line text (will be placed in a code block). Ignored if details_file is provided.'
+    required: false
+    default: ''
+  details_file:
+    description: 'Path to a file containing multi-line text (preferred for large output). Overrides details.'
+    required: false
+    default: ''
+
+runs:
+  using: 'node20'
+  main: 'index.js'

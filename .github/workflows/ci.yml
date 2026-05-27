@@ -16,47 +16,14 @@ jobs:
     - name: Run a simple test
       id: simple-test
       run: |
-        cat sca-scanning-example.txt
+        cat sca-scanning-example.txt > /tmp/sca-output.txt
         echo "message=SCA scan completed with 35 CVEs" >> "$GITHUB_OUTPUT"
 
-    - name: Microsoft Teams Notification
-      uses: skitionek/notify-microsoft-teams@master
+    - name: Microsoft Teams Notification (Custom Action)
+      uses: ./.github/actions/custom-teams-action
       if: always()
       with:
         webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
-        raw: >-
-          {
-            "type": "message",
-            "attachments": [
-              {
-                "contentType": "application/vnd.microsoft.card.adaptive",
-                "content": {
-                  "type": "AdaptiveCard",
-                  "body": [
-                    {
-                      "type": "TextBlock",
-                      "text": "SCA Scan Result: ${{ steps.simple-test.outputs.message }}",
-                      "weight": "bolder",
-                      "size": "medium"
-                    },
-                    {
-                      "type": "TextBlock",
-                      "text": "Click the buttons below for details."
-                    }
-                  ],
-                  "actions": [
-                    {
-                      "type": "Action.OpenUrl",
-                      "title": "View Run",
-                      "url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-                    },
-                    {
-                      "type": "Action.OpenUrl",
-                      "title": "Repository",
-                      "url": "https://github.com/${{ github.repository }}"
-                    }
-                  ]
-                }
-              }
-            ]
-          }
+        title: 'SCA Scan Result'
+        message: ${{ steps.simple-test.outputs.message }}
+        details_file: /tmp/sca-output.txt

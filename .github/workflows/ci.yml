@@ -18,6 +18,17 @@ jobs:
       run: |
         cp samples/sample-sca-results.json "${{ runner.temp }}/sca-results.json"
 
+    # - name: Run Prisma Cloud
+    #   id: prisma-cloud
+    #   uses: bridgecrewio/checkov-action@master
+    #   env:
+    #     PRISMA_API_URL: https://api.sg.prismacloud.io
+    #   with:
+    #     api-key: ${{ secrets.BC_API_KEY }}
+    #     use-enforcement-rules: true
+    #     output-file-path: ${{ runner.temp }}/sca-results.json,
+    #     output-format: json
+
     - name: Microsoft Teams Notification
       uses: ./
       if: always()

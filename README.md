@@ -20,15 +20,15 @@ This action is designed for security and compliance workflows. It has first-clas
 | `webhook_url`  | **Yes**  | Teams webhook URL from Power Automate ("Send webhook alerts to a channel") |
 | `title`        | No       | Card title. When omitted with `sarif_file` or `json_file`, a dynamic title is generated. |
 | `message`      | No       | Short summary line shown below the title |
-| `sarif_file`   | No       | Path to a SARIF file (recommended for security scans) |
-| `json_file`    | No       | Path to a JSON file (Prisma Cloud/Checkov SCA format) – alternative to SARIF |
+| `json_file`    | No       | Path to a JSON file (Prisma Cloud/Checkov SCA format) (recommended for security scans) |
+| `sarif_file`   | No       | Path to a SARIF file – alternative to JSON |
 | `details_file` | No       | Path to a text file with multi-line content (fallback) |
 | `details_url`  | No       | Custom URL for the "View Details" button |
 | `details`      | No       | Inline multi-line text (lowest priority fallback) |
 
 ## Usage Examples
 
-### 1. Basic SARIF notification (recommended)
+### 1. Basic JSON notification (recommended)
 
 ```yaml
 - name: Send SCA Results to Teams
@@ -36,7 +36,7 @@ This action is designed for security and compliance workflows. It has first-clas
   if: always()
   with:
     webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
-    sarif_file: ${{ runner.temp }}/sca-results.sarif
+    json_file: ${{ runner.temp }}/sca-results.json
 ```
 
 ### 2. With explicit title and custom details URL
@@ -48,7 +48,7 @@ This action is designed for security and compliance workflows. It has first-clas
   with:
     webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
     title: "Prisma Cloud SCA Scanning Results"
-    sarif_file: ${{ runner.temp }}/sca-results.sarif
+    json_file: ${{ runner.temp }}/sca-results.json
     details_url: "https://your-company.prismacloud.io/appsec/projects"
 ```
 
@@ -72,7 +72,7 @@ After you publish this action (see "Publishing" section below), other repositori
   if: always()
   with:
     webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
-    sarif_file: ${{ runner.temp }}/results.sarif
+    json_file: ${{ runner.temp }}/results.json
 ```
 
 **Recommended reference methods for private repositories:**
@@ -91,7 +91,7 @@ Always use `${{ runner.temp }}` for temporary files:
 
 ```yaml
 run: |
-  cp results.sarif "${{ runner.temp }}/sca-results.sarif"
+  cp results.json "${{ runner.temp }}/sca-results.json"
 ```
 
 This works on both Linux and Windows self-hosted runners.

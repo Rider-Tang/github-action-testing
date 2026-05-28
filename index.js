@@ -1,5 +1,5 @@
-const fs = require('fs');
-const https = require('https');
+import fs from 'fs';
+import https from 'https';
 
 function getInput(name, required = false) {
   const envName = `INPUT_${name.toUpperCase().replace(/-/g, '_')}`;

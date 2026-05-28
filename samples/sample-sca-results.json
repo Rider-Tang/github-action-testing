@@ -1,0 +1,1550 @@
+{
+    "check_type": "sca_package",
+    "results": {
+        "passed_checks": [],
+        "failed_checks": [
+            {
+                "check_id": "BC_VUL_2",
+                "bc_check_id": "BC_CVE_2025_13465",
+                "check_name": "SCA package scan",
+                "check_result": {
+                    "result": "FAILED"
+                },
+                "code_block": [
+                    [
+                        39,
+                        "    \"lodash\": \"^4.17.21\",\r"
+                    ]
+                ],
+                "file_path": "/src/package.json",
+                "file_abs_path": "src/package.json",
+                "repo_file_path": "/src/package.json",
+                "file_line_range": [
+                    39,
+                    39
+                ],
+                "resource": "src/package.json.lodash",
+                "evaluations": null,
+                "check_class": "checkov.sca_package_2.scanner.Scanner",
+                "fixed_definition": "    \"lodash\": \"^4.17.23\",\r",
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": "MEDIUM",
+                "bc_category": null,
+                "benchmarks": null,
+                "description": "Lodash versions 4.0.0 through 4.17.22 are vulnerable to prototype pollution in the _.unset and _.omit functions. An attacker can pass crafted paths which cause Lodash to delete methods from global prototypes.  The issue permits deletion of properties but does not allow overwriting their original behavior.  This issue is patched on 4.17.23",
+                "short_description": "CVE-2025-13465 - lodash: 4.17.21",
+                "vulnerability_details": {
+                    "id": "CVE-2025-13465",
+                    "severity": "medium",
+                    "package_name": "lodash",
+                    "package_version": "4.17.21",
+                    "package_registry": "",
+                    "is_private_registry": false,
+                    "package_type": "",
+                    "link": "https://nvd.nist.gov/vuln/detail/CVE-2025-13465",
+                    "cvss": 5.3,
+                    "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+                    "description": "Lodash versions 4.0.0 through 4.17.22 are vulnerable to prototype pollution in the _.unset and _.omit functions. An attacker can pass crafted paths which cause Lodash to delete methods from global prototypes.  The issue permits deletion of properties but does not allow overwriting their original behavior.  This issue is patched on 4.17.23",
+                    "risk_factors": {
+                        "Severity": "Medium",
+                        "HasFix": true,
+                        "DoS": false,
+                        "AttackVector": "network",
+                        "AttackComplexity": "low",
+                        "RecentVulnerability": true
+                    },
+                    "published_date": "2026-01-21T20:16:05Z",
+                    "licenses": "Unknown",
+                    "root_package_name": null,
+                    "root_package_version": null,
+                    "root_package_file_line_range": [
+                        0,
+                        0
+                    ],
+                    "fix_command": {
+                        "msg": "To bump to the fixed version 4.17.23, please run command",
+                        "cmds": [
+                            "`npm i lodash@4.17.23`"
+                        ],
+                        "manualCodeFix": false
+                    },
+                    "status": "fixed in 4.17.23",
+                    "lowest_fixed_version": "4.17.23",
+                    "fixed_versions": [
+                        "4.17.23"
+                    ],
+                    "image_details": null
+                },
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null
+            },
+            {
+                "check_id": "BC_VUL_2",
+                "bc_check_id": "BC_CVE_2026_2950",
+                "check_name": "SCA package scan",
+                "check_result": {
+                    "result": "FAILED"
+                },
+                "code_block": [
+                    [
+                        39,
+                        "    \"lodash\": \"^4.17.21\",\r"
+                    ]
+                ],
+                "file_path": "/src/package.json",
+                "file_abs_path": "src/package.json",
+                "repo_file_path": "/src/package.json",
+                "file_line_range": [
+                    39,
+                    39
+                ],
+                "resource": "src/package.json.lodash",
+                "evaluations": null,
+                "check_class": "checkov.sca_package_2.scanner.Scanner",
+                "fixed_definition": "    \"lodash\": \"^4.17.23\",\r",
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": "MEDIUM",
+                "bc_category": null,
+                "benchmarks": null,
+                "description": "Impact:  Lodash versions 4.17.23 and earlier are vulnerable to prototype pollution in the _.unset and _.omit functions. The fix for (CVE-2025-13465: https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg) only guards against string key members, so an attacker can bypass the check by passing array-wrapped path segments. This allows deletion of properties from built-in prototypes such as Object.prototype, Number.prototype, and String.prototype.  The issue permits deletion of prototype properties but does not allow overwriting their original behavior.  Patches:  This issue is patched in 4.18.0.  Workarounds:  None. Upgrade to the patched version.",
+                "short_description": "CVE-2026-2950 - lodash: 4.17.21",
+                "vulnerability_details": {
+                    "id": "CVE-2026-2950",
+                    "severity": "medium",
+                    "package_name": "lodash",
+                    "package_version": "4.17.21",
+                    "package_registry": "",
+                    "is_private_registry": false,
+                    "package_type": "",
+                    "link": "https://nvd.nist.gov/vuln/detail/CVE-2026-2950",
+                    "cvss": 5.3,
+                    "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+                    "description": "Impact:  Lodash versions 4.17.23 and earlier are vulnerable to prototype pollution in the _.unset and _.omit functions. The fix for (CVE-2025-13465: https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg) only guards against string key members, so an attacker can bypass the check by passing array-wrapped path segments. This allows deletion of properties from built-in prototypes such as Object.prototype, Number.prototype, and String.prototype.  The issue permits deletion of prototype properties but does not allow overwriting their original behavior.  Patches:  This issue is patched in 4.18.0.  Workarounds:  None. Upgrade to the patched version.",
+                    "risk_factors": {
+                        "Severity": "Medium",
+                        "HasFix": true,
+                        "DoS": false,
+                        "AttackVector": "network",
+                        "AttackComplexity": "low",
+                        "RecentVulnerability": true
+                    },
+                    "published_date": "2026-03-31T20:16:26Z",
+                    "licenses": "Unknown",
+                    "root_package_name": null,
+                    "root_package_version": null,
+                    "root_package_file_line_range": [
+                        0,
+                        0
+                    ],
+                    "fix_command": {
+                        "msg": "To bump to the fixed version 4.17.23, please run command",
+                        "cmds": [
+                            "`npm i lodash@4.17.23`"
+                        ],
+                        "manualCodeFix": false
+                    },
+                    "status": "fixed in 4.17.23",
+                    "lowest_fixed_version": "4.17.23",
+                    "fixed_versions": [
+                        "4.17.23"
+                    ],
+                    "image_details": null
+                },
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null
+            },
+            {
+                "check_id": "BC_VUL_2",
+                "bc_check_id": "BC_CVE_2026_4800",
+                "check_name": "SCA package scan",
+                "check_result": {
+                    "result": "FAILED"
+                },
+                "code_block": [
+                    [
+                        39,
+                        "    \"lodash\": \"^4.17.21\",\r"
+                    ]
+                ],
+                "file_path": "/src/package.json",
+                "file_abs_path": "src/package.json",
+                "repo_file_path": "/src/package.json",
+                "file_line_range": [
+                    39,
+                    39
+                ],
+                "resource": "src/package.json.lodash",
+                "evaluations": null,
+                "check_class": "checkov.sca_package_2.scanner.Scanner",
+                "fixed_definition": "    \"lodash\": \"^4.18.0\",\r",
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": "CRITICAL",
+                "bc_category": null,
+                "benchmarks": null,
+                "description": "Impact:  The fix for CVE-2021-23337 (https://github.com/advisories/GHSA-35jh-r3h4-6jhm) added validation for the variable option in _.template but did not apply the same validation to options.imports key names. Both paths flow into the same Function() constructor sink.  When an application passes untrusted input as options.imports key names, an attacker can inject default-parameter expressions that execute arbitrary code at template compilation time.  Additionally, _.template uses assignInWith to merge imports, which enumerates inherited properties via for..in. If Object.prototype has been polluted by any other vector, the polluted keys are copied into the imports object and passed to Function().  Patches:  Users should upgrade to version 4.18.0.  Workarounds:  Do not pass untrusted input as key names in options.imports. Only use developer-controlled, static key names.",
+                "short_description": "CVE-2026-4800 - lodash: 4.17.21",
+                "vulnerability_details": {
+                    "id": "CVE-2026-4800",
+                    "severity": "critical",
+                    "package_name": "lodash",
+                    "package_version": "4.17.21",
+                    "package_registry": "",
+                    "is_private_registry": false,
+                    "package_type": "",
+                    "link": "https://nvd.nist.gov/vuln/detail/CVE-2026-4800",
+                    "cvss": 9.8,
+                    "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+                    "description": "Impact:  The fix for CVE-2021-23337 (https://github.com/advisories/GHSA-35jh-r3h4-6jhm) added validation for the variable option in _.template but did not apply the same validation to options.imports key names. Both paths flow into the same Function() constructor sink.  When an application passes untrusted input as options.imports key names, an attacker can inject default-parameter expressions that execute arbitrary code at template compilation time.  Additionally, _.template uses assignInWith to merge imports, which enumerates inherited properties via for..in. If Object.prototype has been polluted by any other vector, the polluted keys are copied into the imports object and passed to Function().  Patches:  Users should upgrade to version 4.18.0.  Workarounds:  Do not pass untrusted input as key names in options.imports. Only use developer-controlled, static key names.",
+                    "risk_factors": {
+                        "Severity": "Critical",
+                        "HasFix": true,
+                        "DoS": false,
+                        "RemoteExecution": true,
+                        "AttackVector": "network",
+                        "AttackComplexity": "low",
+                        "RecentVulnerability": true
+                    },
+                    "published_date": "2026-03-31T20:16:29Z",
+                    "licenses": "Unknown",
+                    "root_package_name": null,
+                    "root_package_version": null,
+                    "root_package_file_line_range": [
+                        0,
+                        0
+                    ],
+                    "fix_command": {
+                        "msg": "To bump to the fixed version 4.18.0, please run command",
+                        "cmds": [
+                            "`npm i lodash@4.18.0`"
+                        ],
+                        "manualCodeFix": false
+                    },
+                    "status": "fixed in 4.18.0",
+                    "lowest_fixed_version": "4.18.0",
+                    "fixed_versions": [
+                        "4.18.0"
+                    ],
+                    "image_details": null
+                },
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null
+            },
+            {
+                "check_id": "BC_VUL_2",
+                "bc_check_id": "BC_CVE_2025_14874",
+                "check_name": "SCA package scan",
+                "check_result": {
+                    "result": "FAILED"
+                },
+                "code_block": [
+                    [
+                        42,
+                        "    \"nodemailer\": \"^6.9.16\",\r"
+                    ]
+                ],
+                "file_path": "/src/package.json",
+                "file_abs_path": "src/package.json",
+                "repo_file_path": "/src/package.json",
+                "file_line_range": [
+                    42,
+                    42
+                ],
+                "resource": "src/package.json.nodemailer",
+                "evaluations": null,
+                "check_class": "checkov.sca_package_2.scanner.Scanner",
+                "fixed_definition": "    \"nodemailer\": \"^7.0.11\",\r",
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": "HIGH",
+                "bc_category": null,
+                "benchmarks": null,
+                "description": "A flaw was found in Nodemailer. This vulnerability allows a denial of service (DoS) via a crafted email address header that triggers infinite recursion in the address parser.",
+                "short_description": "CVE-2025-14874 - nodemailer: 6.9.16",
+                "vulnerability_details": {
+                    "id": "CVE-2025-14874",
+                    "severity": "high",
+                    "package_name": "nodemailer",
+                    "package_version": "6.9.16",
+                    "package_registry": "",
+                    "is_private_registry": false,
+                    "package_type": "",
+                    "link": "https://nvd.nist.gov/vuln/detail/CVE-2025-14874",
+                    "cvss": 7.5,
+                    "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                    "description": "A flaw was found in Nodemailer. This vulnerability allows a denial of service (DoS) via a crafted email address header that triggers infinite recursion in the address parser.",
+                    "risk_factors": {
+                        "Severity": "High",
+                        "HasFix": true,
+                        "DoS": false,
+                        "AttackVector": "network",
+                        "AttackComplexity": "low",
+                        "RecentVulnerability": true
+                    },
+                    "published_date": "2025-12-18T09:15:44Z",
+                    "licenses": "Unknown",
+                    "root_package_name": null,
+                    "root_package_version": null,
+                    "root_package_file_line_range": [
+                        0,
+                        0
+                    ],
+                    "fix_command": {
+                        "msg": "To bump to the fixed version 7.0.11, please run command",
+                        "cmds": [
+                            "`npm i nodemailer@7.0.11`"
+                        ],
+                        "manualCodeFix": false
+                    },
+                    "status": "fixed in 7.0.11",
+                    "lowest_fixed_version": "7.0.11",
+                    "fixed_versions": [
+                        "7.0.11"
+                    ],
+                    "image_details": null
+                },
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null
+            },
+            {
+                "check_id": "BC_VUL_2",
+                "bc_check_id": "BC_CVE_2025_13033",
+                "check_name": "SCA package scan",
+                "check_result": {
+                    "result": "FAILED"
+                },
+                "code_block": [
+                    [
+                        42,
+                        "    \"nodemailer\": \"^6.9.16\",\r"
+                    ]
+                ],
+                "file_path": "/src/package.json",
+                "file_abs_path": "src/package.json",
+                "repo_file_path": "/src/package.json",
+                "file_line_range": [
+                    42,
+                    42
+                ],
+                "resource": "src/package.json.nodemailer",
+                "evaluations": null,
+                "check_class": "checkov.sca_package_2.scanner.Scanner",
+                "fixed_definition": "    \"nodemailer\": \"^7.0.7\",\r",
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": "MEDIUM",
+                "bc_category": null,
+                "benchmarks": null,
+                "description": "A vulnerability was identified in the email parsing library due to improper handling of specially formatted recipient email addresses. An attacker can exploit this flaw by crafting a recipient address that embeds an external address within quotes. This causes the application to misdirect the email to the attacker\\'s external address instead of the intended internal recipient. This could lead to a significant data leak of sensitive information and allow an attacker to bypass security filters and access controls.",
+                "short_description": "CVE-2025-13033 - nodemailer: 6.9.16",
+                "vulnerability_details": {
+                    "id": "CVE-2025-13033",
+                    "severity": "medium",
+                    "package_name": "nodemailer",
+                    "package_version": "6.9.16",
+                    "package_registry": "",
+                    "is_private_registry": false,
+                    "package_type": "",
+                    "link": "https://nvd.nist.gov/vuln/detail/CVE-2025-13033",
+                    "cvss": 5.5,
+                    "vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N/E:P",
+                    "description": "A vulnerability was identified in the email parsing library due to improper handling of specially formatted recipient email addresses. An attacker can exploit this flaw by crafting a recipient address that embeds an external address within quotes. This causes the application to misdirect the email to the attacker\\'s external address instead of the intended internal recipient. This could lead to a significant data leak of sensitive information and allow an attacker to bypass security filters and access controls.",
+                    "risk_factors": {
+                        "Severity": "Medium",
+                        "HasFix": true,
+                        "DoS": false,
+                        "AttackVector": "network",
+                        "AttackComplexity": "low"
+                    },
+                    "published_date": "2025-11-14T20:15:45Z",
+                    "licenses": "Unknown",
+                    "root_package_name": null,
+                    "root_package_version": null,
+                    "root_package_file_line_range": [
+                        0,
+                        0
+                    ],
+                    "fix_command": {
+                        "msg": "To bump to the fixed version 7.0.7, please run command",
+                        "cmds": [
+                            "`npm i nodemailer@7.0.7`"
+                        ],
+                        "manualCodeFix": false
+                    },
+                    "status": "fixed in 7.0.7",
+                    "lowest_fixed_version": "7.0.7",
+                    "fixed_versions": [
+                        "7.0.7"
+                    ],
+                    "image_details": null
+                },
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null
+            },
+            {
+                "check_id": "BC_VUL_2",
+                "bc_check_id": "BC_GHSA_C7W3_X93F_QMM8",
+                "check_name": "SCA package scan",
+                "check_result": {
+                    "result": "FAILED"
+                },
+                "code_block": [
+                    [
+                        42,
+                        "    \"nodemailer\": \"^6.9.16\",\r"
+                    ]
+                ],
+                "file_path": "/src/package.json",
+                "file_abs_path": "src/package.json",
+                "repo_file_path": "/src/package.json",
+                "file_line_range": [
+                    42,
+                    42
+                ],
+                "resource": "src/package.json.nodemailer",
+                "evaluations": null,
+                "check_class": "checkov.sca_package_2.scanner.Scanner",
+                "fixed_definition": "    \"nodemailer\": \"^8.0.4\",\r",
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": "LOW",
+                "bc_category": null,
+                "benchmarks": null,
+                "description": "### Summary When a custom `envelope` object is passed to `sendMail()` with a `size` property containing CRLF characters (`\\r\\n`), the value is concatenated directly into the SMTP `MAIL FROM` command without sanitization. This allows injection of arbitrary SMTP commands, including `RCPT TO` \u2014 silently adding attacker-controlled recipients to outgoing emails.   ### Details In `lib/smtp-connection/index.js` (lines 1161-1162), the `envelope.size` value is concatenated into the SMTP `MAIL FROM` command without any CRLF sanitization:  ```javascript if (this._envelope.size && this._supportedExtensions.includes(\\'SIZE\\')) {     args.push(\\'SIZE=\\' + this._envelope.size); } ```  This contrasts with other envelope parameters in the same function that ARE properly sanitized: - **Addresses** (`from`, `to`): validated for `[\\r\\n<>]` at lines 1107-1127 - **DSN parameters** (`dsn.ret`, `dsn.envid`, `dsn.orcpt`): encoded via `encodeXText()` at lines 1167-1183  The `size` property reaches this code path through `MimeNode.setEnvelope()` in `lib/mime-node/index.js` (lines 854-858), which copies all non-standard envelope properties verbatim:  ```javascript const standardFields = [\\'to\\', \\'cc\\', \\'bcc\\', \\'from\\']; Object.keys(envelope).forEach(key => {     if (!standardFields.includes(key)) {         this._envelope[key] = envelope[key];     } }); ```  Since `_sendCommand()` writes the command string followed",
+                "short_description": "GHSA-C7W3-X93F-QMM8 - nodemailer: 6.9.16",
+                "vulnerability_details": {
+                    "id": "GHSA-C7W3-X93F-QMM8",
+                    "severity": "low",
+                    "package_name": "nodemailer",
+                    "package_version": "6.9.16",
+                    "package_registry": "",
+                    "is_private_registry": false,
+                    "package_type": "",
+                    "link": "https://github.com/advisories/GHSA-c7w3-x93f-qmm8",
+                    "cvss": 2.3,
+                    "vector": "CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:N/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N",
+                    "description": "### Summary When a custom `envelope` object is passed to `sendMail()` with a `size` property containing CRLF characters (`\\r\\n`), the value is concatenated directly into the SMTP `MAIL FROM` command without sanitization. This allows injection of arbitrary SMTP commands, including `RCPT TO` \u2014 silently adding attacker-controlled recipients to outgoing emails.   ### Details In `lib/smtp-connection/index.js` (lines 1161-1162), the `envelope.size` value is concatenated into the SMTP `MAIL FROM` command without any CRLF sanitization:  ```javascript if (this._envelope.size && this._supportedExtensions.includes(\\'SIZE\\')) {     args.push(\\'SIZE=\\' + this._envelope.size); } ```  This contrasts with other envelope parameters in the same function that ARE properly sanitized: - **Addresses** (`from`, `to`): validated for `[\\r\\n<>]` at lines 1107-1127 - **DSN parameters** (`dsn.ret`, `dsn.envid`, `dsn.orcpt`): encoded via `encodeXText()` at lines 1167-1183  The `size` property reaches this code path through `MimeNode.setEnvelope()` in `lib/mime-node/index.js` (lines 854-858), which copies all non-standard envelope properties verbatim:  ```javascript const standardFields = [\\'to\\', \\'cc\\', \\'bcc\\', \\'from\\']; Object.keys(envelope).forEach(key => {     if (!standardFields.includes(key)) {         this._envelope[key] = envelope[key];     } }); ```  Since `_sendCommand()` writes the command string followed",
+                    "risk_factors": {
+                        "Severity": "Low",
+                        "HasFix": true,
+                        "DoS": false,
+                        "AttackVector": "network",
+                        "AttackComplexity": "low",
+                        "RecentVulnerability": true
+                    },
+                    "published_date": "2026-03-26T22:26:46Z",
+                    "licenses": "Unknown",
+                    "root_package_name": null,
+                    "root_package_version": null,
+                    "root_package_file_line_range": [
+                        0,
+                        0
+                    ],
+                    "fix_command": {
+                        "msg": "To bump to the fixed version 8.0.4, please run command",
+                        "cmds": [
+                            "`npm i nodemailer@8.0.4`"
+                        ],
+                        "manualCodeFix": false
+                    },
+                    "status": "fixed in 8.0.4",
+                    "lowest_fixed_version": "8.0.4",
+                    "fixed_versions": [
+                        "8.0.4"
+                    ],
+                    "image_details": null
+                },
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null
+            },
+            {
+                "check_id": "BC_VUL_2",
+                "bc_check_id": "BC_GHSA_VVJJ_XCJG_GR5G",
+                "check_name": "SCA package scan",
+                "check_result": {
+                    "result": "FAILED"
+                },
+                "code_block": [
+                    [
+                        42,
+                        "    \"nodemailer\": \"^6.9.16\",\r"
+                    ]
+                ],
+                "file_path": "/src/package.json",
+                "file_abs_path": "src/package.json",
+                "repo_file_path": "/src/package.json",
+                "file_line_range": [
+                    42,
+                    42
+                ],
+                "resource": "src/package.json.nodemailer",
+                "evaluations": null,
+                "check_class": "checkov.sca_package_2.scanner.Scanner",
+                "fixed_definition": "    \"nodemailer\": \"^8.0.5\",\r",
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": "MEDIUM",
+                "bc_category": null,
+                "benchmarks": null,
+                "description": "### Summary  Nodemailer versions up to and including 8.0.4 are vulnerable to SMTP command injection via CRLF sequences in the transport `name` configuration option. The `name` value is used directly in the EHLO/HELO SMTP command without any sanitization for carriage return and line feed characters (`\\r\\n`). An attacker who can influence this option can inject arbitrary SMTP commands, enabling unauthorized email sending, email spoofing, and phishing attacks.  ### Details  The vulnerability exists in `lib/smtp-connection/index.js`. When establishing an SMTP connection, the `name` option is concatenated directly into the EHLO command:  ```javascript // lib/smtp-connection/index.js, line 71 this.name = this.options.name || this._getHostname();  // line 1336 this._sendCommand(\\'EHLO \\' + this.name); ```  The `_sendCommand` method writes the string directly to the socket followed by `\\r\\n` (line 1082):  ```javascript this._socket.write(Buffer.from(str + \\'\\r\\n\\', \\'utf-8\\')); ```  If the `name` option contains `\\r\\n` sequences, each injected line is interpreted by the SMTP server as a separate command. Unlike the `envelope.from` and `envelope.to` fields which are validated for `\\r\\n` (line 1107-1119), and unlike `envelope.size` which was recently fixed (GHSA-c7w3-x93f-qmm8) by casting to a number, the `name` parameter receives no CRLF sanitization whatsoever.  This is distinct from the pre",
+                "short_description": "GHSA-VVJJ-XCJG-GR5G - nodemailer: 6.9.16",
+                "vulnerability_details": {
+                    "id": "GHSA-VVJJ-XCJG-GR5G",
+                    "severity": "medium",
+                    "package_name": "nodemailer",
+                    "package_version": "6.9.16",
+                    "package_registry": "",
+                    "is_private_registry": false,
+                    "package_type": "",
+                    "link": "https://github.com/advisories/GHSA-vvjj-xcjg-gr5g",
+                    "cvss": 4.9,
+                    "vector": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:H/A:N",
+                    "description": "### Summary  Nodemailer versions up to and including 8.0.4 are vulnerable to SMTP command injection via CRLF sequences in the transport `name` configuration option. The `name` value is used directly in the EHLO/HELO SMTP command without any sanitization for carriage return and line feed characters (`\\r\\n`). An attacker who can influence this option can inject arbitrary SMTP commands, enabling unauthorized email sending, email spoofing, and phishing attacks.  ### Details  The vulnerability exists in `lib/smtp-connection/index.js`. When establishing an SMTP connection, the `name` option is concatenated directly into the EHLO command:  ```javascript // lib/smtp-connection/index.js, line 71 this.name = this.options.name || this._getHostname();  // line 1336 this._sendCommand(\\'EHLO \\' + this.name); ```  The `_sendCommand` method writes the string directly to the socket followed by `\\r\\n` (line 1082):  ```javascript this._socket.write(Buffer.from(str + \\'\\r\\n\\', \\'utf-8\\')); ```  If the `name` option contains `\\r\\n` sequences, each injected line is interpreted by the SMTP server as a separate command. Unlike the `envelope.from` and `envelope.to` fields which are validated for `\\r\\n` (line 1107-1119), and unlike `envelope.size` which was recently fixed (GHSA-c7w3-x93f-qmm8) by casting to a number, the `name` parameter receives no CRLF sanitization whatsoever.  This is distinct from the pre",
+                    "risk_factors": {
+                        "Severity": "Medium",
+                        "HasFix": true,
+                        "DoS": false,
+                        "AttackVector": "network",
+                        "AttackComplexity": "low",
+                        "RecentVulnerability": true
+                    },
+                    "published_date": "2026-04-08T15:05:20Z",
+                    "licenses": "Unknown",
+                    "root_package_name": null,
+                    "root_package_version": null,
+                    "root_package_file_line_range": [
+                        0,
+                        0
+                    ],
+                    "fix_command": {
+                        "msg": "To bump to the fixed version 8.0.5, please run command",
+                        "cmds": [
+                            "`npm i nodemailer@8.0.5`"
+                        ],
+                        "manualCodeFix": false
+                    },
+                    "status": "fixed in 8.0.5",
+                    "lowest_fixed_version": "8.0.5",
+                    "fixed_versions": [
+                        "8.0.5"
+                    ],
+                    "image_details": null
+                },
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null
+            },
+            {
+                "check_id": "BC_VUL_2",
+                "bc_check_id": "BC_CVE_2024_47764",
+                "check_name": "SCA package scan",
+                "check_result": {
+                    "result": "FAILED"
+                },
+                "code_block": [
+                    [
+                        33,
+                        "    \"cookie\": \"^0.5.0\",\r"
+                    ]
+                ],
+                "file_path": "/src/package.json",
+                "file_abs_path": "src/package.json",
+                "repo_file_path": "/src/package.json",
+                "file_line_range": [
+                    33,
+                    33
+                ],
+                "resource": "src/package.json.cookie",
+                "evaluations": null,
+                "check_class": "checkov.sca_package_2.scanner.Scanner",
+                "fixed_definition": "    \"cookie\": \"^0.7.0\",\r",
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": "LOW",
+                "bc_category": null,
+                "benchmarks": null,
+                "description": "cookie is a basic HTTP cookie parser and serializer for HTTP servers. The cookie name could be used to set other fields of the cookie, resulting in an unexpected cookie value. A similar escape can be used for path and domain, which could be abused to alter other fields of the cookie. Upgrade to 0.7.0, which updates the validation for name, path, and domain.",
+                "short_description": "CVE-2024-47764 - cookie: 0.5.0",
+                "vulnerability_details": {
+                    "id": "CVE-2024-47764",
+                    "severity": "low",
+                    "package_name": "cookie",
+                    "package_version": "0.5.0",
+                    "package_registry": "",
+                    "is_private_registry": false,
+                    "package_type": "",
+                    "link": "https://nvd.nist.gov/vuln/detail/CVE-2024-47764",
+                    "cvss": 0,
+                    "vector": "",
+                    "description": "cookie is a basic HTTP cookie parser and serializer for HTTP servers. The cookie name could be used to set other fields of the cookie, resulting in an unexpected cookie value. A similar escape can be used for path and domain, which could be abused to alter other fields of the cookie. Upgrade to 0.7.0, which updates the validation for name, path, and domain.",
+                    "risk_factors": {
+                        "Severity": "Low",
+                        "HasFix": true,
+                        "DoS": false
+                    },
+                    "published_date": "2024-10-04T20:15:07Z",
+                    "licenses": "Unknown",
+                    "root_package_name": null,
+                    "root_package_version": null,
+                    "root_package_file_line_range": [
+                        0,
+                        0
+                    ],
+                    "fix_command": {
+                        "msg": "To bump to the fixed version 0.7.0, please run command",
+                        "cmds": [
+                            "`npm i cookie@0.7.0`"
+                        ],
+                        "manualCodeFix": false
+                    },
+                    "status": "fixed in 0.7.0",
+                    "lowest_fixed_version": "0.7.0",
+                    "fixed_versions": [
+                        "0.7.0"
+                    ],
+                    "image_details": null
+                },
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null
+            },
+            {
+                "check_id": "BC_VUL_2",
+                "bc_check_id": "BC_PRISMA_2021_0096",
+                "check_name": "SCA package scan",
+                "check_result": {
+                    "result": "FAILED"
+                },
+                "code_block": [
+                    [
+                        43,
+                        "    \"tar\": \"^2.2.2\"\r"
+                    ]
+                ],
+                "file_path": "/src/package.json",
+                "file_abs_path": "src/package.json",
+                "repo_file_path": "/src/package.json",
+                "file_line_range": [
+                    43,
+                    43
+                ],
+                "resource": "src/package.json.tar",
+                "evaluations": null,
+                "check_class": "checkov.sca_package_2.scanner.Scanner",
+                "fixed_definition": "    \"tar\": \"^4.4.16\"\r",
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": "LOW",
+                "bc_category": null,
+                "benchmarks": null,
+                "description": "tar package versions before 6.1.4, 4.4.16, and 5.0.8 are vulnerable to Regular Expression Denial of Service (ReDoS). When stripping the trailing slash from `files` arguments, we were using `f.replace(/\\\\/+$/, \\'\\')`, which can get exponentially slow when `f` contains many `/` characters. This is \\\"\\\"unlikely but theoretically possible\\\"\\\" because it requires that the user is passing untrusted input into the `tar.extract()` or `tar.list()` array of entries to parse/extract, which would be quite unusual.",
+                "short_description": "PRISMA-2021-0096 - tar: 2.2.2",
+                "vulnerability_details": {
+                    "id": "PRISMA-2021-0096",
+                    "severity": "low",
+                    "package_name": "tar",
+                    "package_version": "2.2.2",
+                    "package_registry": "",
+                    "is_private_registry": false,
+                    "package_type": "",
+                    "link": "https://github.com/npm/node-tar/commit/06cbde5935aa7643f578f874de84a7da2a74fe3a",
+                    "cvss": 3.5,
+                    "vector": "",
+                    "description": "tar package versions before 6.1.4, 4.4.16, and 5.0.8 are vulnerable to Regular Expression Denial of Service (ReDoS). When stripping the trailing slash from `files` arguments, we were using `f.replace(/\\\\/+$/, \\'\\')`, which can get exponentially slow when `f` contains many `/` characters. This is \\\"\\\"unlikely but theoretically possible\\\"\\\" because it requires that the user is passing untrusted input into the `tar.extract()` or `tar.list()` array of entries to parse/extract, which would be quite unusual.",
+                    "risk_factors": {
+                        "Severity": "Low",
+                        "HasFix": true,
+                        "DoS": false
+                    },
+                    "published_date": "2021-08-30T08:44:48Z",
+                    "licenses": "Unknown",
+                    "root_package_name": null,
+                    "root_package_version": null,
+                    "root_package_file_line_range": [
+                        0,
+                        0
+                    ],
+                    "fix_command": {
+                        "msg": "To bump to the fixed version 4.4.16, please run command",
+                        "cmds": [
+                            "`npm i tar@4.4.16`"
+                        ],
+                        "manualCodeFix": false
+                    },
+                    "status": "fixed in 6.1.4, 4.4.16, 5.0.8",
+                    "lowest_fixed_version": "4.4.16",
+                    "fixed_versions": [
+                        "6.1.4",
+                        "4.4.16",
+                        "5.0.8"
+                    ],
+                    "image_details": null
+                },
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null
+            },
+            {
+                "check_id": "BC_VUL_2",
+                "bc_check_id": "BC_CVE_2026_24842",
+                "check_name": "SCA package scan",
+                "check_result": {
+                    "result": "FAILED"
+                },
+                "code_block": [
+                    [
+                        43,
+                        "    \"tar\": \"^2.2.2\"\r"
+                    ]
+                ],
+                "file_path": "/src/package.json",
+                "file_abs_path": "src/package.json",
+                "repo_file_path": "/src/package.json",
+                "file_line_range": [
+                    43,
+                    43
+                ],
+                "resource": "src/package.json.tar",
+                "evaluations": null,
+                "check_class": "checkov.sca_package_2.scanner.Scanner",
+                "fixed_definition": "    \"tar\": \"^7.5.7\"\r",
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": "LOW",
+                "bc_category": null,
+                "benchmarks": null,
+                "description": "node-tar,a Tar for Node.js, contains a vulnerability in versions prior to 7.5.7 where the security check for hardlink entries uses different path resolution semantics than the actual hardlink creation logic. This mismatch allows an attacker to craft a malicious TAR archive that bypasses path traversal protections and creates hardlinks to arbitrary files outside the extraction directory. Version 7.5.7 contains a fix for the issue.",
+                "short_description": "CVE-2026-24842 - tar: 2.2.2",
+                "vulnerability_details": {
+                    "id": "CVE-2026-24842",
+                    "severity": "low",
+                    "package_name": "tar",
+                    "package_version": "2.2.2",
+                    "package_registry": "",
+                    "is_private_registry": false,
+                    "package_type": "",
+                    "link": "https://nvd.nist.gov/vuln/detail/CVE-2026-24842",
+                    "cvss": 0,
+                    "vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N",
+                    "description": "node-tar,a Tar for Node.js, contains a vulnerability in versions prior to 7.5.7 where the security check for hardlink entries uses different path resolution semantics than the actual hardlink creation logic. This mismatch allows an attacker to craft a malicious TAR archive that bypasses path traversal protections and creates hardlinks to arbitrary files outside the extraction directory. Version 7.5.7 contains a fix for the issue.",
+                    "risk_factors": {
+                        "Severity": "Low",
+                        "HasFix": true,
+                        "DoS": false,
+                        "AttackVector": "network",
+                        "RecentVulnerability": true
+                    },
+                    "published_date": "2026-01-28T01:16:14Z",
+                    "licenses": "Unknown",
+                    "root_package_name": null,
+                    "root_package_version": null,
+                    "root_package_file_line_range": [
+                        0,
+                        0
+                    ],
+                    "fix_command": {
+                        "msg": "To bump to the fixed version 7.5.7, please run command",
+                        "cmds": [
+                            "`npm i tar@7.5.7`"
+                        ],
+                        "manualCodeFix": false
+                    },
+                    "status": "fixed in 7.5.7",
+                    "lowest_fixed_version": "7.5.7",
+                    "fixed_versions": [
+                        "7.5.7"
+                    ],
+                    "image_details": null
+                },
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null
+            },
+            {
+                "check_id": "BC_VUL_2",
+                "bc_check_id": "BC_CVE_2026_26960",
+                "check_name": "SCA package scan",
+                "check_result": {
+                    "result": "FAILED"
+                },
+                "code_block": [
+                    [
+                        43,
+                        "    \"tar\": \"^2.2.2\"\r"
+                    ]
+                ],
+                "file_path": "/src/package.json",
+                "file_abs_path": "src/package.json",
+                "repo_file_path": "/src/package.json",
+                "file_line_range": [
+                    43,
+                    43
+                ],
+                "resource": "src/package.json.tar",
+                "evaluations": null,
+                "check_class": "checkov.sca_package_2.scanner.Scanner",
+                "fixed_definition": "    \"tar\": \"^7.5.8\"\r",
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": "HIGH",
+                "bc_category": null,
+                "benchmarks": null,
+                "description": "node-tar is a full-featured Tar for Node.js. When using default options in versions 7.5.7 and below, an attacker-controlled archive can create a hardlink inside the extraction directory that points to a file outside the extraction root, enabling arbitrary file read and write as the extracting user. Severity is high because the primitive bypasses path protections and turns archive extraction into a direct filesystem access primitive. This issue has been fixed in version 7.5.8.",
+                "short_description": "CVE-2026-26960 - tar: 2.2.2",
+                "vulnerability_details": {
+                    "id": "CVE-2026-26960",
+                    "severity": "high",
+                    "package_name": "tar",
+                    "package_version": "2.2.2",
+                    "package_registry": "",
+                    "is_private_registry": false,
+                    "package_type": "",
+                    "link": "https://nvd.nist.gov/vuln/detail/CVE-2026-26960",
+                    "cvss": 7.1,
+                    "vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:N",
+                    "description": "node-tar is a full-featured Tar for Node.js. When using default options in versions 7.5.7 and below, an attacker-controlled archive can create a hardlink inside the extraction directory that points to a file outside the extraction root, enabling arbitrary file read and write as the extracting user. Severity is high because the primitive bypasses path protections and turns archive extraction into a direct filesystem access primitive. This issue has been fixed in version 7.5.8.",
+                    "risk_factors": {
+                        "Severity": "High",
+                        "HasFix": true,
+                        "DoS": false,
+                        "AttackComplexity": "low",
+                        "RecentVulnerability": true
+                    },
+                    "published_date": "2026-02-20T02:16:53Z",
+                    "licenses": "Unknown",
+                    "root_package_name": null,
+                    "root_package_version": null,
+                    "root_package_file_line_range": [
+                        0,
+                        0
+                    ],
+                    "fix_command": {
+                        "msg": "To bump to the fixed version 7.5.8, please run command",
+                        "cmds": [
+                            "`npm i tar@7.5.8`"
+                        ],
+                        "manualCodeFix": false
+                    },
+                    "status": "fixed in 7.5.8",
+                    "lowest_fixed_version": "7.5.8",
+                    "fixed_versions": [
+                        "7.5.8"
+                    ],
+                    "image_details": null
+                },
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null
+            },
+            {
+                "check_id": "BC_VUL_2",
+                "bc_check_id": "BC_CVE_2026_23950",
+                "check_name": "SCA package scan",
+                "check_result": {
+                    "result": "FAILED"
+                },
+                "code_block": [
+                    [
+                        43,
+                        "    \"tar\": \"^2.2.2\"\r"
+                    ]
+                ],
+                "file_path": "/src/package.json",
+                "file_abs_path": "src/package.json",
+                "repo_file_path": "/src/package.json",
+                "file_line_range": [
+                    43,
+                    43
+                ],
+                "resource": "src/package.json.tar",
+                "evaluations": null,
+                "check_class": "checkov.sca_package_2.scanner.Scanner",
+                "fixed_definition": "    \"tar\": \"^7.5.4\"\r",
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": "MEDIUM",
+                "bc_category": null,
+                "benchmarks": null,
+                "description": "node-tar,a Tar for Node.js, has a race condition vulnerability in versions up to and including 7.5.3. This is due to an incomplete handling of Unicode path collisions in the `path-reservations` system. On case-insensitive or normalization-insensitive filesystems (such as macOS APFS, In which it has been tested), the library fails to lock colliding paths (e.g., `\u00df` and `ss`), allowing them to be processed in parallel. This bypasses the library\\'s internal concurrency safeguards and permits Symlink Poisoning attacks via race conditions. The library uses a `PathReservations` system to ensure that metadata checks and file operations for the same path are serialized. This prevents race conditions where one entry might clobber another concurrently. This is a Race Condition which enables Arbitrary File Overwrite. This vulnerability affects users and systems using node-tar on macOS (APFS/HFS+). Because of using `NFD` Unicode normalization (in which `\u00df` and `ss` are different), conflicting paths do not have their order properly preserved under filesystems that ignore Unicode normalization (e.g., APFS (in which `\u00df` causes an inode collision with `ss`)). This enables an attacker to circumvent internal parallelization locks (`PathReservations`) using conflicting filenames within a malicious tar archive. The patch in version 7.5.4 updates `path-reservations.js` to use a normalization form th",
+                "short_description": "CVE-2026-23950 - tar: 2.2.2",
+                "vulnerability_details": {
+                    "id": "CVE-2026-23950",
+                    "severity": "medium",
+                    "package_name": "tar",
+                    "package_version": "2.2.2",
+                    "package_registry": "",
+                    "is_private_registry": false,
+                    "package_type": "",
+                    "link": "https://nvd.nist.gov/vuln/detail/CVE-2026-23950",
+                    "cvss": 5.9,
+                    "vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:N",
+                    "description": "node-tar,a Tar for Node.js, has a race condition vulnerability in versions up to and including 7.5.3. This is due to an incomplete handling of Unicode path collisions in the `path-reservations` system. On case-insensitive or normalization-insensitive filesystems (such as macOS APFS, In which it has been tested), the library fails to lock colliding paths (e.g., `\u00df` and `ss`), allowing them to be processed in parallel. This bypasses the library\\'s internal concurrency safeguards and permits Symlink Poisoning attacks via race conditions. The library uses a `PathReservations` system to ensure that metadata checks and file operations for the same path are serialized. This prevents race conditions where one entry might clobber another concurrently. This is a Race Condition which enables Arbitrary File Overwrite. This vulnerability affects users and systems using node-tar on macOS (APFS/HFS+). Because of using `NFD` Unicode normalization (in which `\u00df` and `ss` are different), conflicting paths do not have their order properly preserved under filesystems that ignore Unicode normalization (e.g., APFS (in which `\u00df` causes an inode collision with `ss`)). This enables an attacker to circumvent internal parallelization locks (`PathReservations`) using conflicting filenames within a malicious tar archive. The patch in version 7.5.4 updates `path-reservations.js` to use a normalization form th",
+                    "risk_factors": {
+                        "Severity": "Medium",
+                        "HasFix": true,
+                        "DoS": false,
+                        "AttackVector": "network",
+                        "RecentVulnerability": true
+                    },
+                    "published_date": "2026-01-20T01:15:57Z",
+                    "licenses": "Unknown",
+                    "root_package_name": null,
+                    "root_package_version": null,
+                    "root_package_file_line_range": [
+                        0,
+                        0
+                    ],
+                    "fix_command": {
+                        "msg": "To bump to the fixed version 7.5.4, please run command",
+                        "cmds": [
+                            "`npm i tar@7.5.4`"
+                        ],
+                        "manualCodeFix": false
+                    },
+                    "status": "fixed in 7.5.4",
+                    "lowest_fixed_version": "7.5.4",
+                    "fixed_versions": [
+                        "7.5.4"
+                    ],
+                    "image_details": null
+                },
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null
+            },
+            {
+                "check_id": "BC_VUL_2",
+                "bc_check_id": "BC_CVE_2026_23745",
+                "check_name": "SCA package scan",
+                "check_result": {
+                    "result": "FAILED"
+                },
+                "code_block": [
+                    [
+                        43,
+                        "    \"tar\": \"^2.2.2\"\r"
+                    ]
+                ],
+                "file_path": "/src/package.json",
+                "file_abs_path": "src/package.json",
+                "repo_file_path": "/src/package.json",
+                "file_line_range": [
+                    43,
+                    43
+                ],
+                "resource": "src/package.json.tar",
+                "evaluations": null,
+                "check_class": "checkov.sca_package_2.scanner.Scanner",
+                "fixed_definition": "    \"tar\": \"^7.5.3\"\r",
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": "MEDIUM",
+                "bc_category": null,
+                "benchmarks": null,
+                "description": "node-tar is a Tar for Node.js. The node-tar library (<= 7.5.2) fails to sanitize the linkpath of Link (hardlink) and SymbolicLink entries when preservePaths is false (the default secure behavior). This allows malicious archives to bypass the extraction root restriction, leading to Arbitrary File Overwrite via hardlinks and Symlink Poisoning via absolute symlink targets. This vulnerability is fixed in 7.5.3.",
+                "short_description": "CVE-2026-23745 - tar: 2.2.2",
+                "vulnerability_details": {
+                    "id": "CVE-2026-23745",
+                    "severity": "medium",
+                    "package_name": "tar",
+                    "package_version": "2.2.2",
+                    "package_registry": "",
+                    "is_private_registry": false,
+                    "package_type": "",
+                    "link": "https://nvd.nist.gov/vuln/detail/CVE-2026-23745",
+                    "cvss": 6.1,
+                    "vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:L/A:N",
+                    "description": "node-tar is a Tar for Node.js. The node-tar library (<= 7.5.2) fails to sanitize the linkpath of Link (hardlink) and SymbolicLink entries when preservePaths is false (the default secure behavior). This allows malicious archives to bypass the extraction root restriction, leading to Arbitrary File Overwrite via hardlinks and Symlink Poisoning via absolute symlink targets. This vulnerability is fixed in 7.5.3.",
+                    "risk_factors": {
+                        "Severity": "Medium",
+                        "HasFix": true,
+                        "DoS": false,
+                        "AttackComplexity": "low",
+                        "RecentVulnerability": true
+                    },
+                    "published_date": "2026-01-16T22:16:26Z",
+                    "licenses": "Unknown",
+                    "root_package_name": null,
+                    "root_package_version": null,
+                    "root_package_file_line_range": [
+                        0,
+                        0
+                    ],
+                    "fix_command": {
+                        "msg": "To bump to the fixed version 7.5.3, please run command",
+                        "cmds": [
+                            "`npm i tar@7.5.3`"
+                        ],
+                        "manualCodeFix": false
+                    },
+                    "status": "fixed in 7.5.3",
+                    "lowest_fixed_version": "7.5.3",
+                    "fixed_versions": [
+                        "7.5.3"
+                    ],
+                    "image_details": null
+                },
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null
+            },
+            {
+                "check_id": "BC_VUL_2",
+                "bc_check_id": "BC_CVE_2024_28863",
+                "check_name": "SCA package scan",
+                "check_result": {
+                    "result": "FAILED"
+                },
+                "code_block": [
+                    [
+                        43,
+                        "    \"tar\": \"^2.2.2\"\r"
+                    ]
+                ],
+                "file_path": "/src/package.json",
+                "file_abs_path": "src/package.json",
+                "repo_file_path": "/src/package.json",
+                "file_line_range": [
+                    43,
+                    43
+                ],
+                "resource": "src/package.json.tar",
+                "evaluations": null,
+                "check_class": "checkov.sca_package_2.scanner.Scanner",
+                "fixed_definition": "    \"tar\": \"^6.2.1\"\r",
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": "LOW",
+                "bc_category": null,
+                "benchmarks": null,
+                "description": "node-tar is a Tar for Node.js. node-tar prior to version 6.2.1 has no limit on the number of sub-folders created in the folder creation process. An attacker who generates a large number of sub-folders can consume memory on the system running node-tar and even crash the Node.js client within few seconds of running it using a path with too many sub-folders inside. Version 6.2.1 fixes this issue by preventing extraction in excessively deep sub-folders.",
+                "short_description": "CVE-2024-28863 - tar: 2.2.2",
+                "vulnerability_details": {
+                    "id": "CVE-2024-28863",
+                    "severity": "low",
+                    "package_name": "tar",
+                    "package_version": "2.2.2",
+                    "package_registry": "",
+                    "is_private_registry": false,
+                    "package_type": "",
+                    "link": "https://nvd.nist.gov/vuln/detail/CVE-2024-28863",
+                    "cvss": 0,
+                    "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+                    "description": "node-tar is a Tar for Node.js. node-tar prior to version 6.2.1 has no limit on the number of sub-folders created in the folder creation process. An attacker who generates a large number of sub-folders can consume memory on the system running node-tar and even crash the Node.js client within few seconds of running it using a path with too many sub-folders inside. Version 6.2.1 fixes this issue by preventing extraction in excessively deep sub-folders.",
+                    "risk_factors": {
+                        "Severity": "Low",
+                        "HasFix": true,
+                        "DoS": false,
+                        "AttackVector": "network",
+                        "AttackComplexity": "low"
+                    },
+                    "published_date": "2024-03-21T23:15:10Z",
+                    "licenses": "Unknown",
+                    "root_package_name": null,
+                    "root_package_version": null,
+                    "root_package_file_line_range": [
+                        0,
+                        0
+                    ],
+                    "fix_command": {
+                        "msg": "To bump to the fixed version 6.2.1, please run command",
+                        "cmds": [
+                            "`npm i tar@6.2.1`"
+                        ],
+                        "manualCodeFix": false
+                    },
+                    "status": "fixed in 6.2.1",
+                    "lowest_fixed_version": "6.2.1",
+                    "fixed_versions": [
+                        "6.2.1"
+                    ],
+                    "image_details": null
+                },
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null
+            },
+            {
+                "check_id": "BC_VUL_2",
+                "bc_check_id": "BC_CVE_2021_32803",
+                "check_name": "SCA package scan",
+                "check_result": {
+                    "result": "FAILED"
+                },
+                "code_block": [
+                    [
+                        43,
+                        "    \"tar\": \"^2.2.2\"\r"
+                    ]
+                ],
+                "file_path": "/src/package.json",
+                "file_abs_path": "src/package.json",
+                "repo_file_path": "/src/package.json",
+                "file_line_range": [
+                    43,
+                    43
+                ],
+                "resource": "src/package.json.tar",
+                "evaluations": null,
+                "check_class": "checkov.sca_package_2.scanner.Scanner",
+                "fixed_definition": "    \"tar\": \"^4.4.15\"\r",
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": "HIGH",
+                "bc_category": null,
+                "benchmarks": null,
+                "description": "The npm package \\\"tar\\\" (aka node-tar) before versions 6.1.2, 5.0.7, 4.4.15, and 3.2.3 has an arbitrary File Creation/Overwrite vulnerability via insufficient symlink protection. `node-tar` aims to guarantee that any file whose location would be modified by a symbolic link is not extracted. This is, in part, achieved by ensuring that extracted directories are not symlinks. Additionally, in order to prevent unnecessary `stat` calls to determine whether a given path is a directory, paths are cached when directories are created. This logic was insufficient when extracting tar files that contained both a directory and a symlink with the same name as the directory. This order of operations resulted in the directory being created and added to the `node-tar` directory cache. When a directory is present in the directory cache, subsequent calls to mkdir for that directory are skipped. However, this is also where `node-tar` checks for symlinks occur. By first creating a directory, and then replacing that directory with a symlink, it was thus possible to bypass `node-tar` symlink checks on directories, essentially allowing an untrusted tar file to symlink into an arbitrary location and subsequently extracting arbitrary files into that location, thus allowing arbitrary file creation and overwrite. This issue was addressed in releases 3.2.3, 4.4.15, 5.0.7 and 6.1.2.",
+                "short_description": "CVE-2021-32803 - tar: 2.2.2",
+                "vulnerability_details": {
+                    "id": "CVE-2021-32803",
+                    "severity": "high",
+                    "package_name": "tar",
+                    "package_version": "2.2.2",
+                    "package_registry": "",
+                    "is_private_registry": false,
+                    "package_type": "",
+                    "link": "https://nvd.nist.gov/vuln/detail/CVE-2021-32803",
+                    "cvss": 8.1,
+                    "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:H/A:H",
+                    "description": "The npm package \\\"tar\\\" (aka node-tar) before versions 6.1.2, 5.0.7, 4.4.15, and 3.2.3 has an arbitrary File Creation/Overwrite vulnerability via insufficient symlink protection. `node-tar` aims to guarantee that any file whose location would be modified by a symbolic link is not extracted. This is, in part, achieved by ensuring that extracted directories are not symlinks. Additionally, in order to prevent unnecessary `stat` calls to determine whether a given path is a directory, paths are cached when directories are created. This logic was insufficient when extracting tar files that contained both a directory and a symlink with the same name as the directory. This order of operations resulted in the directory being created and added to the `node-tar` directory cache. When a directory is present in the directory cache, subsequent calls to mkdir for that directory are skipped. However, this is also where `node-tar` checks for symlinks occur. By first creating a directory, and then replacing that directory with a symlink, it was thus possible to bypass `node-tar` symlink checks on directories, essentially allowing an untrusted tar file to symlink into an arbitrary location and subsequently extracting arbitrary files into that location, thus allowing arbitrary file creation and overwrite. This issue was addressed in releases 3.2.3, 4.4.15, 5.0.7 and 6.1.2.",
+                    "risk_factors": {
+                        "Severity": "High",
+                        "HasFix": true,
+                        "DoS": false,
+                        "AttackVector": "network",
+                        "AttackComplexity": "low"
+                    },
+                    "published_date": "2021-08-03T19:15:08Z",
+                    "licenses": "Unknown",
+                    "root_package_name": null,
+                    "root_package_version": null,
+                    "root_package_file_line_range": [
+                        0,
+                        0
+                    ],
+                    "fix_command": {
+                        "msg": "To bump to the fixed version 4.4.15, please run command",
+                        "cmds": [
+                            "`npm i tar@4.4.15`"
+                        ],
+                        "manualCodeFix": false
+                    },
+                    "status": "fixed in 6.1.2, 5.0.7, 4.4.15,...",
+                    "lowest_fixed_version": "4.4.15",
+                    "fixed_versions": [
+                        "6.1.2",
+                        "5.0.7",
+                        "4.4.15"
+                    ],
+                    "image_details": null
+                },
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null
+            },
+            {
+                "check_id": "BC_VUL_2",
+                "bc_check_id": "BC_CVE_2021_32804",
+                "check_name": "SCA package scan",
+                "check_result": {
+                    "result": "FAILED"
+                },
+                "code_block": [
+                    [
+                        43,
+                        "    \"tar\": \"^2.2.2\"\r"
+                    ]
+                ],
+                "file_path": "/src/package.json",
+                "file_abs_path": "src/package.json",
+                "repo_file_path": "/src/package.json",
+                "file_line_range": [
+                    43,
+                    43
+                ],
+                "resource": "src/package.json.tar",
+                "evaluations": null,
+                "check_class": "checkov.sca_package_2.scanner.Scanner",
+                "fixed_definition": "    \"tar\": \"^4.4.14\"\r",
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": "HIGH",
+                "bc_category": null,
+                "benchmarks": null,
+                "description": "The npm package \\\"tar\\\" (aka node-tar) before versions 6.1.1, 5.0.6, 4.4.14, and 3.3.2 has a arbitrary File Creation/Overwrite vulnerability due to insufficient absolute path sanitization. node-tar aims to prevent extraction of absolute file paths by turning absolute paths into relative paths when the `preservePaths` flag is not set to `true`. This is achieved by stripping the absolute path root from any absolute file paths contained in a tar file. For example `/home/user/.bashrc` would turn into `home/user/.bashrc`. This logic was insufficient when file paths contained repeated path roots such as `////home/user/.bashrc`. `node-tar` would only strip a single path root from such paths. When given an absolute file path with repeating path roots, the resulting path (e.g. `///home/user/.bashrc`) would still resolve to an absolute path, thus allowing arbitrary file creation and overwrite. This issue was addressed in releases 3.2.2, 4.4.14, 5.0.6 and 6.1.1. Users may work around this vulnerability without upgrading by creating a custom `onentry` method which sanitizes the `entry.path` or a `filter` method which removes entries with absolute paths. See referenced GitHub Advisory for details. Be aware of CVE-2021-32803 which fixes a similar bug in later versions of tar.",
+                "short_description": "CVE-2021-32804 - tar: 2.2.2",
+                "vulnerability_details": {
+                    "id": "CVE-2021-32804",
+                    "severity": "high",
+                    "package_name": "tar",
+                    "package_version": "2.2.2",
+                    "package_registry": "",
+                    "is_private_registry": false,
+                    "package_type": "",
+                    "link": "https://nvd.nist.gov/vuln/detail/CVE-2021-32804",
+                    "cvss": 8.1,
+                    "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:H/A:H",
+                    "description": "The npm package \\\"tar\\\" (aka node-tar) before versions 6.1.1, 5.0.6, 4.4.14, and 3.3.2 has a arbitrary File Creation/Overwrite vulnerability due to insufficient absolute path sanitization. node-tar aims to prevent extraction of absolute file paths by turning absolute paths into relative paths when the `preservePaths` flag is not set to `true`. This is achieved by stripping the absolute path root from any absolute file paths contained in a tar file. For example `/home/user/.bashrc` would turn into `home/user/.bashrc`. This logic was insufficient when file paths contained repeated path roots such as `////home/user/.bashrc`. `node-tar` would only strip a single path root from such paths. When given an absolute file path with repeating path roots, the resulting path (e.g. `///home/user/.bashrc`) would still resolve to an absolute path, thus allowing arbitrary file creation and overwrite. This issue was addressed in releases 3.2.2, 4.4.14, 5.0.6 and 6.1.1. Users may work around this vulnerability without upgrading by creating a custom `onentry` method which sanitizes the `entry.path` or a `filter` method which removes entries with absolute paths. See referenced GitHub Advisory for details. Be aware of CVE-2021-32803 which fixes a similar bug in later versions of tar.",
+                    "risk_factors": {
+                        "Severity": "High",
+                        "HasFix": true,
+                        "DoS": false,
+                        "AttackVector": "network",
+                        "AttackComplexity": "low"
+                    },
+                    "published_date": "2021-08-03T19:15:08Z",
+                    "licenses": "Unknown",
+                    "root_package_name": null,
+                    "root_package_version": null,
+                    "root_package_file_line_range": [
+                        0,
+                        0
+                    ],
+                    "fix_command": {
+                        "msg": "To bump to the fixed version 4.4.14, please run command",
+                        "cmds": [
+                            "`npm i tar@4.4.14`"
+                        ],
+                        "manualCodeFix": false
+                    },
+                    "status": "fixed in 6.1.1, 5.0.6, 4.4.14,...",
+                    "lowest_fixed_version": "4.4.14",
+                    "fixed_versions": [
+                        "6.1.1",
+                        "5.0.6",
+                        "4.4.14"
+                    ],
+                    "image_details": null
+                },
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null
+            },
+            {
+                "check_id": "BC_VUL_2",
+                "bc_check_id": "BC_CVE_2021_37701",
+                "check_name": "SCA package scan",
+                "check_result": {
+                    "result": "FAILED"
+                },
+                "code_block": [
+                    [
+                        43,
+                        "    \"tar\": \"^2.2.2\"\r"
+                    ]
+                ],
+                "file_path": "/src/package.json",
+                "file_abs_path": "src/package.json",
+                "repo_file_path": "/src/package.json",
+                "file_line_range": [
+                    43,
+                    43
+                ],
+                "resource": "src/package.json.tar",
+                "evaluations": null,
+                "check_class": "checkov.sca_package_2.scanner.Scanner",
+                "fixed_definition": "    \"tar\": \"^4.4.16\"\r",
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": "HIGH",
+                "bc_category": null,
+                "benchmarks": null,
+                "description": "The npm package \\\"tar\\\" (aka node-tar) before versions 4.4.16, 5.0.8, and 6.1.7 has an arbitrary file creation/overwrite and arbitrary code execution vulnerability. node-tar aims to guarantee that any file whose location would be modified by a symbolic link is not extracted. This is, in part, achieved by ensuring that extracted directories are not symlinks. Additionally, in order to prevent unnecessary stat calls to determine whether a given path is a directory, paths are cached when directories are created. This logic was insufficient when extracting tar files that contained both a directory and a symlink with the same name as the directory, where the symlink and directory names in the archive entry used backslashes as a path separator on posix systems. The cache checking logic used both `\\\\` and `/` characters as path separators, however `\\\\` is a valid filename character on posix systems. By first creating a directory, and then replacing that directory with a symlink, it was thus possible to bypass node-tar symlink checks on directories, essentially allowing an untrusted tar file to symlink into an arbitrary location and subsequently extracting arbitrary files into that location, thus allowing arbitrary file creation and overwrite. Additionally, a similar confusion could arise on case-insensitive filesystems. If a tar archive contained a directory at `FOO`, followed by a symboli",
+                "short_description": "CVE-2021-37701 - tar: 2.2.2",
+                "vulnerability_details": {
+                    "id": "CVE-2021-37701",
+                    "severity": "high",
+                    "package_name": "tar",
+                    "package_version": "2.2.2",
+                    "package_registry": "",
+                    "is_private_registry": false,
+                    "package_type": "",
+                    "link": "https://nvd.nist.gov/vuln/detail/CVE-2021-37701",
+                    "cvss": 8.6,
+                    "vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:C/C:H/I:H/A:H",
+                    "description": "The npm package \\\"tar\\\" (aka node-tar) before versions 4.4.16, 5.0.8, and 6.1.7 has an arbitrary file creation/overwrite and arbitrary code execution vulnerability. node-tar aims to guarantee that any file whose location would be modified by a symbolic link is not extracted. This is, in part, achieved by ensuring that extracted directories are not symlinks. Additionally, in order to prevent unnecessary stat calls to determine whether a given path is a directory, paths are cached when directories are created. This logic was insufficient when extracting tar files that contained both a directory and a symlink with the same name as the directory, where the symlink and directory names in the archive entry used backslashes as a path separator on posix systems. The cache checking logic used both `\\\\` and `/` characters as path separators, however `\\\\` is a valid filename character on posix systems. By first creating a directory, and then replacing that directory with a symlink, it was thus possible to bypass node-tar symlink checks on directories, essentially allowing an untrusted tar file to symlink into an arbitrary location and subsequently extracting arbitrary files into that location, thus allowing arbitrary file creation and overwrite. Additionally, a similar confusion could arise on case-insensitive filesystems. If a tar archive contained a directory at `FOO`, followed by a symboli",
+                    "risk_factors": {
+                        "Severity": "High",
+                        "HasFix": true,
+                        "DoS": false,
+                        "AttackComplexity": "low",
+                        "RemoteExecution": true
+                    },
+                    "published_date": "2021-08-31T17:15:07Z",
+                    "licenses": "Unknown",
+                    "root_package_name": null,
+                    "root_package_version": null,
+                    "root_package_file_line_range": [
+                        0,
+                        0
+                    ],
+                    "fix_command": {
+                        "msg": "To bump to the fixed version 4.4.16, please run command",
+                        "cmds": [
+                            "`npm i tar@4.4.16`"
+                        ],
+                        "manualCodeFix": false
+                    },
+                    "status": "fixed in 6.1.7, 5.0.8, 4.4.16",
+                    "lowest_fixed_version": "4.4.16",
+                    "fixed_versions": [
+                        "6.1.7",
+                        "5.0.8",
+                        "4.4.16"
+                    ],
+                    "image_details": null
+                },
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null
+            },
+            {
+                "check_id": "BC_VUL_2",
+                "bc_check_id": "BC_CVE_2026_29786",
+                "check_name": "SCA package scan",
+                "check_result": {
+                    "result": "FAILED"
+                },
+                "code_block": [
+                    [
+                        43,
+                        "    \"tar\": \"^2.2.2\"\r"
+                    ]
+                ],
+                "file_path": "/src/package.json",
+                "file_abs_path": "src/package.json",
+                "repo_file_path": "/src/package.json",
+                "file_line_range": [
+                    43,
+                    43
+                ],
+                "resource": "src/package.json.tar",
+                "evaluations": null,
+                "check_class": "checkov.sca_package_2.scanner.Scanner",
+                "fixed_definition": "    \"tar\": \"^7.5.10\"\r",
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": "MEDIUM",
+                "bc_category": null,
+                "benchmarks": null,
+                "description": "node-tar is a full-featured Tar for Node.js. Prior to version 7.5.10, tar can be tricked into creating a hardlink that points outside the extraction directory by using a drive-relative link target such as C:../target.txt, which enables file overwrite outside cwd during normal tar.x() extraction. This issue has been patched in version 7.5.10.",
+                "short_description": "CVE-2026-29786 - tar: 2.2.2",
+                "vulnerability_details": {
+                    "id": "CVE-2026-29786",
+                    "severity": "medium",
+                    "package_name": "tar",
+                    "package_version": "2.2.2",
+                    "package_registry": "",
+                    "is_private_registry": false,
+                    "package_type": "",
+                    "link": "https://nvd.nist.gov/vuln/detail/CVE-2026-29786",
+                    "cvss": 6.3,
+                    "vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:C/C:N/I:H/A:N",
+                    "description": "node-tar is a full-featured Tar for Node.js. Prior to version 7.5.10, tar can be tricked into creating a hardlink that points outside the extraction directory by using a drive-relative link target such as C:../target.txt, which enables file overwrite outside cwd during normal tar.x() extraction. This issue has been patched in version 7.5.10.",
+                    "risk_factors": {
+                        "Severity": "Medium",
+                        "HasFix": true,
+                        "DoS": false,
+                        "AttackComplexity": "low",
+                        "RecentVulnerability": true
+                    },
+                    "published_date": "2026-03-07T16:15:55Z",
+                    "licenses": "Unknown",
+                    "root_package_name": null,
+                    "root_package_version": null,
+                    "root_package_file_line_range": [
+                        0,
+                        0
+                    ],
+                    "fix_command": {
+                        "msg": "To bump to the fixed version 7.5.10, please run command",
+                        "cmds": [
+                            "`npm i tar@7.5.10`"
+                        ],
+                        "manualCodeFix": false
+                    },
+                    "status": "fixed in 7.5.10",
+                    "lowest_fixed_version": "7.5.10",
+                    "fixed_versions": [
+                        "7.5.10"
+                    ],
+                    "image_details": null
+                },
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null
+            },
+            {
+                "check_id": "BC_VUL_2",
+                "bc_check_id": "BC_CVE_2026_31802",
+                "check_name": "SCA package scan",
+                "check_result": {
+                    "result": "FAILED"
+                },
+                "code_block": [
+                    [
+                        43,
+                        "    \"tar\": \"^2.2.2\"\r"
+                    ]
+                ],
+                "file_path": "/src/package.json",
+                "file_abs_path": "src/package.json",
+                "repo_file_path": "/src/package.json",
+                "file_line_range": [
+                    43,
+                    43
+                ],
+                "resource": "src/package.json.tar",
+                "evaluations": null,
+                "check_class": "checkov.sca_package_2.scanner.Scanner",
+                "fixed_definition": "    \"tar\": \"^7.5.11\"\r",
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": "MEDIUM",
+                "bc_category": null,
+                "benchmarks": null,
+                "description": "node-tar is a full-featured Tar for Node.js. Prior to version 7.5.11, tar (npm) can be tricked into creating a symlink that points outside the extraction directory by using a drive-relative symlink target such as C:../../../target.txt, which enables file overwrite outside cwd during normal tar.x() extraction. This vulnerability is fixed in 7.5.11.",
+                "short_description": "CVE-2026-31802 - tar: 2.2.2",
+                "vulnerability_details": {
+                    "id": "CVE-2026-31802",
+                    "severity": "medium",
+                    "package_name": "tar",
+                    "package_version": "2.2.2",
+                    "package_registry": "",
+                    "is_private_registry": false,
+                    "package_type": "",
+                    "link": "https://nvd.nist.gov/vuln/detail/CVE-2026-31802",
+                    "cvss": 5.5,
+                    "vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:N",
+                    "description": "node-tar is a full-featured Tar for Node.js. Prior to version 7.5.11, tar (npm) can be tricked into creating a symlink that points outside the extraction directory by using a drive-relative symlink target such as C:../../../target.txt, which enables file overwrite outside cwd during normal tar.x() extraction. This vulnerability is fixed in 7.5.11.",
+                    "risk_factors": {
+                        "Severity": "Medium",
+                        "HasFix": true,
+                        "DoS": false,
+                        "AttackComplexity": "low",
+                        "RecentVulnerability": true
+                    },
+                    "published_date": "2026-03-10T07:44:58Z",
+                    "licenses": "Unknown",
+                    "root_package_name": null,
+                    "root_package_version": null,
+                    "root_package_file_line_range": [
+                        0,
+                        0
+                    ],
+                    "fix_command": {
+                        "msg": "To bump to the fixed version 7.5.11, please run command",
+                        "cmds": [
+                            "`npm i tar@7.5.11`"
+                        ],
+                        "manualCodeFix": false
+                    },
+                    "status": "fixed in 7.5.11",
+                    "lowest_fixed_version": "7.5.11",
+                    "fixed_versions": [
+                        "7.5.11"
+                    ],
+                    "image_details": null
+                },
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null
+            }
+        ],
+        "skipped_checks": [],
+        "parsing_errors": []
+    },
+    "summary": {
+        "passed": 0,
+        "failed": 19,
+        "skipped": 0,
+        "parsing_errors": 0,
+        "resource_count": 4,
+        "checkov_version": "3.2.527"
+    },
+    "url": "https://app.sg.prismacloud.io/projects?branch=bc-396a017_develop&repoUUID=4f64517c-3219-4bf2-9b77-3d1113f833fe&runId=latest&viewId=CICDRuns"
+}

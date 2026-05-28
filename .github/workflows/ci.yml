@@ -16,7 +16,7 @@ jobs:
     - name: Run a simple test
       id: simple-test
       run: |
-        cp samples/sample-sca-results.sarif "${{ runner.temp }}/sca-results.sarif"
+        cp samples/sample-sca-results.json "${{ runner.temp }}/sca-results.json"
 
     - name: Microsoft Teams Notification
       uses: ./
@@ -24,4 +24,4 @@ jobs:
       with:
         webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
         title: "Prisma Cloud SCA Scanning Results"
-        sarif_file: ${{ runner.temp }}/sca-results.sarif
+        json_file: ${{ runner.temp }}/sca-results.json

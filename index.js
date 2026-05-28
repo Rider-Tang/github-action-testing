@@ -54,6 +54,7 @@ async function run() {
     const details = getInput('details');
     const sarifFile = getInput('sarif_file');
     const detailsUrl = getInput('details_url');
+    const jsonFile = getInput('json_file');
 
     // Build Adaptive Card body elements
     const bodyElements = [
@@ -138,6 +139,71 @@ async function run() {
         }
       } catch (e) {
         console.error(`::warning::Failed to parse SARIF file: ${e.message}`);
+      }
+    } else if (jsonFile && fs.existsSync(jsonFile)) {
+      try {
+        const jsonContent = JSON.parse(fs.readFileSync(jsonFile, 'utf8'));
+        const failedChecks = jsonContent.results?.failed_checks || [];
+
+        // Generate dynamic title from failed_checks count if caller did not provide one
+        const dynamicTitle = failedChecks.length > 0
+          ? `SCA Scan Result: ${failedChecks.length} CVEs`
+          : 'SCA Scan Result: No CVEs found';
+        const finalTitle = providedTitle || dynamicTitle;
+
+        // Replace the first TextBlock (the title) with the dynamic one
+        bodyElements[0] = {
+          type: 'TextBlock',
+          text: finalTitle,
+          weight: 'bolder',
+          size: 'medium'
+        };
+
+        if (failedChecks.length > 0) {
+          bodyElements.push({
+            type: 'TextBlock',
+            text: `Findings (${failedChecks.length} total)`,
+            weight: 'bolder',
+            spacing: 'medium'
+          });
+
+          // Render one FactSet per finding (no hard limit).
+          // Each FactSet shows Package, CVE ID, Severity, Current/Fixed/Compliant versions.
+          failedChecks.forEach((result, index) => {
+            const vd = result.vulnerability_details || {};
+            const severity = (result.severity || vd.severity || 'unknown').toUpperCase();
+            const pkg = vd.package_name || '';
+            const cve = vd.id || result.bc_check_id || result.check_id || '';
+            const current = vd.package_version || '';
+            const fixed = vd.lowest_fixed_version || (vd.fixed_versions && vd.fixed_versions[0]) || '';
+            const compliant = '';
+
+            const findingFacts = [
+              { title: 'Package',            value: pkg },
+              { title: 'CVE ID',             value: cve },
+              { title: 'Severity',           value: severity },
+              { title: 'Current version',    value: current },
+              { title: 'Fixed version',      value: fixed },
+              { title: 'Compliant version',  value: compliant }
+            ];
+
+            if (index > 0) {
+              bodyElements.push({
+                type: 'TextBlock',
+                text: '---',
+                spacing: 'medium',
+                isSubtle: true
+              });
+            }
+
+            bodyElements.push({
+              type: 'FactSet',
+              facts: findingFacts
+            });
+          });
+        }
+      } catch (e) {
+        console.error(`::warning::Failed to parse JSON file: ${e.message}`);
       }
     } else if (detailsFile && fs.existsSync(detailsFile)) {
       const detailsContent = fs.readFileSync(detailsFile, 'utf8');

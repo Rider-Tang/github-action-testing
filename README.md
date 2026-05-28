@@ -18,9 +18,10 @@ This action is designed for security and compliance workflows. It has first-clas
 | Input          | Required | Description |
 |----------------|----------|-------------|
 | `webhook_url`  | **Yes**  | Teams webhook URL from Power Automate ("Send webhook alerts to a channel") |
-| `title`        | No       | Card title. When omitted with `sarif_file`, a dynamic title is generated. |
+| `title`        | No       | Card title. When omitted with `sarif_file` or `json_file`, a dynamic title is generated. |
 | `message`      | No       | Short summary line shown below the title |
 | `sarif_file`   | No       | Path to a SARIF file (recommended for security scans) |
+|| `json_file`    | No       | Path to a JSON file (Prisma Cloud/Checkov SCA format) – alternative to SARIF |
 | `details_file` | No       | Path to a text file with multi-line content (fallback) |
 | `details_url`  | No       | Custom URL for the "View Details" button |
 | `details`      | No       | Inline multi-line text (lowest priority fallback) |

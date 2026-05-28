@@ -7,7 +7,7 @@ inputs:
     description: 'Teams webhook URL from Power Automate "Send webhook alerts to a channel"'
     required: true
   title:
-    description: 'Main title text for the Adaptive Card. If omitted when using sarif_file, a dynamic title is generated from the result count.'
+    description: 'Main title text for the Adaptive Card. If omitted when using sarif_file or json_file, a dynamic title is generated from the result count.'
     required: false
     default: ''
   message:
@@ -19,11 +19,15 @@ inputs:
     required: false
     default: ''
   details_file:
-    description: 'Path to a file containing multi-line text. Ignored when sarif_file is provided.'
+    description: 'Path to a file containing multi-line text. Ignored when sarif_file or json_file is provided.'
     required: false
     default: ''
   sarif_file:
     description: 'Path to a SARIF file. When provided, findings are rendered as one FactSet per result (recommended for security scans).'
+    required: false
+    default: ''
+  json_file:
+    description: 'Path to a JSON file (Prisma Cloud / Checkov SCA format). When provided and sarif_file is not, findings are rendered as one FactSet per result.'
     required: false
     default: ''
   details_url:

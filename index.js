@@ -53,7 +53,7 @@ async function run() {
     const detailsFile = getInput('details_file');
     const details = getInput('details');
     const sarifFile = getInput('sarif_file');
-    const detailsUrl = getInput('details_url');
+    let detailsUrl = getInput('details_url');
     const jsonFile = getInput('json_file');
 
     // Build Adaptive Card body elements
@@ -143,6 +143,9 @@ async function run() {
     } else if (jsonFile && fs.existsSync(jsonFile)) {
       try {
         const jsonContent = JSON.parse(fs.readFileSync(jsonFile, 'utf8'));
+        if (!detailsUrl && jsonContent.url) {
+          detailsUrl = jsonContent.url;
+        }
         const failedChecks = jsonContent.results?.failed_checks || [];
 
         // Generate dynamic title from failed_checks count if caller did not provide one

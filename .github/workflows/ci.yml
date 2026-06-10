@@ -31,8 +31,7 @@ jobs:
 
     - name: Microsoft Teams Notification
       uses: ./
-      if: steps.simple-test.outcome == 'success'
-      # if: steps.prisma-cloud.outcome == 'success'
+      if: hashFiles(format('{0}/sca-results.json', runner.temp)) != ''
       with:
         webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
         title: "${{ github.event.repository.name }} - Prisma Cloud SCA Scanning Results"

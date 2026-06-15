@@ -214,7 +214,7 @@ async function run() {
     let detailsUrl = getInput('details_url');
     const jsonFile = getInput('json_file');
     const maxPerCardInput = getInput('max_findings_per_card');
-    const maxFindingsPerCard = parseInt(maxPerCardInput, 10) || 2;
+    const maxFindingsPerCard = parseInt(maxPerCardInput, 10) || 20;
 
     if (sarifFile && fs.existsSync(sarifFile)) {
       try {

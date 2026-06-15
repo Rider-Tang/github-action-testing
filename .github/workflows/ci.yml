@@ -34,5 +34,5 @@ jobs:
       if: always()
       with:
         webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
-        title: "${{ github.event.repository.name }} - Prisma Cloud SCA Scanning Results"
+        title: "${{ github.event.repository.name }} - SCA Results"
         json_file: ${{ runner.temp }}/sca-results.json

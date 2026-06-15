@@ -158,6 +158,15 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
       });
     }
 
+    if (numBatches > 1) {
+      bodyElements.push({
+        type: 'TextBlock',
+        text: `Part ${b + 1} of ${numBatches} findings`,
+        spacing: 'medium',
+        isSubtle: true
+      });
+    }
+
     if (b === 0) {
       bodyElements.push({
         type: 'TextBlock',

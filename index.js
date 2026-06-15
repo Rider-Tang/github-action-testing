@@ -132,6 +132,12 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
         spacing: 'medium'
       });
     }
+    bodyElements.push({
+      type: 'TextBlock',
+      text: 'No vulnerabilities detected in this scan.',
+      spacing: 'medium',
+      isSubtle: true
+    });
     await sendCard(bodyElements, detailsUrl, webhookUrl);
     return;
   }
@@ -183,12 +189,35 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
       const globalIndex = start + idxInBatch;
       const findingFacts = createFindingFacts(result, isSarif);
 
+      // Determine severity for styling
+      let severityForStyle = 'unknown';
+      if (isSarif) {
+        const props = result.properties || {};
+        severityForStyle = (props.severity || result.level || 'unknown').toUpperCase();
+      } else {
+        const vd = result.vulnerability_details || {};
+        severityForStyle = (result.severity || vd.severity || 'unknown').toUpperCase();
+      }
+
       if (globalIndex > 0) {
         bodyElements.push({
           type: 'TextBlock',
           text: '---',
           spacing: 'medium',
           isSubtle: true
+        });
+      }
+
+      // Add colored severity indicator for CRITICAL and HIGH
+      if (severityForStyle === 'CRITICAL' || severityForStyle === 'HIGH') {
+        const indicatorColor = 'attention'; // red-ish in most renderers
+        const indicatorText = severityForStyle === 'CRITICAL' ? '🔴 CRITICAL' : '🟠 HIGH';
+        bodyElements.push({
+          type: 'TextBlock',
+          text: indicatorText,
+          weight: 'bolder',
+          color: indicatorColor,
+          spacing: 'small'
         });
       }
 
@@ -214,7 +243,7 @@ async function run() {
     let detailsUrl = getInput('details_url');
     const jsonFile = getInput('json_file');
     const maxPerCardInput = getInput('max_findings_per_card');
-    const maxFindingsPerCard = parseInt(maxPerCardInput, 10) || 20;
+    const maxFindingsPerCard = parseInt(maxPerCardInput, 10) || 50;
 
     if (sarifFile && fs.existsSync(sarifFile)) {
       try {

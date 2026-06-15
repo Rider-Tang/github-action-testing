@@ -35,9 +35,9 @@ inputs:
     required: false
     default: ''
   max_findings_per_card:
-    description: 'Maximum number of findings to include per Adaptive Card. Extra findings are sent in follow-up cards. Set to 0 for unlimited (not recommended for large scans). Default: 20.'
+    description: 'Maximum number of findings to include per Adaptive Card. Extra findings are sent in follow-up cards. Set to 0 for unlimited (not recommended for large scans). Default: 50.'
     required: false
-    default: '20'
+    default: '50'
 
 runs:
   using: 'node24'

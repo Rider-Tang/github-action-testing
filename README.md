@@ -32,7 +32,7 @@ This action is designed for security and compliance workflows. It has first-clas
 
 ```yaml
 - name: Send SCA Results to Teams
-  uses: cic-itd/prisma-cloud-teams-notifier@v1
+  uses: cic-itd/workflow-nodejs-prisma-cloud-teams-notification@v1
   if: always()
   with:
     webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
@@ -43,7 +43,7 @@ This action is designed for security and compliance workflows. It has first-clas
 
 ```yaml
 - name: Send SCA Results to Teams
-  uses: cic-itd/prisma-cloud-teams-notifier@v1
+  uses: cic-itd/workflow-nodejs-prisma-cloud-teams-notification@v1
   if: always()
   with:
     webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
@@ -56,7 +56,7 @@ This action is designed for security and compliance workflows. It has first-clas
 
 ```yaml
 - name: Send notification
-  uses: cic-itd/prisma-cloud-teams-notifier@v1
+  uses: cic-itd/workflow-nodejs-prisma-cloud-teams-notification@v1
   with:
     webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
     details_file: /tmp/scan-output.txt
@@ -68,7 +68,7 @@ After you publish this action (see "Publishing" section below), other repositori
 
 ```yaml
 - name: Notify Teams
-  uses: cic-itd/prisma-cloud-teams-notifier@v1
+  uses: cic-itd/workflow-nodejs-prisma-cloud-teams-notification@v1
   if: always()
   with:
     webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
@@ -79,9 +79,9 @@ After you publish this action (see "Publishing" section below), other repositori
 
 | Method | Example | Recommendation |
 |--------|---------|----------------|
-| Release tag | `cic-itd/prisma-cloud-teams-notifier@v1` | Easiest, but requires creating releases |
-| Commit SHA | `cic-itd/prisma-cloud-teams-notifier@abc1234` | Most secure for private repos (pin to exact version) |
-| Branch | `cic-itd/prisma-cloud-teams-notifier@main` | Convenient during active development |
+| Release tag | `cic-itd/workflow-nodejs-prisma-cloud-teams-notification@v1` | Easiest, but requires creating releases |
+| Commit SHA | `cic-itd/workflow-nodejs-prisma-cloud-teams-notification@abc1234` | Most secure for private repos (pin to exact version) |
+| Branch | `cic-itd/workflow-nodejs-prisma-cloud-teams-notification@main` | Convenient during active development |
 
 For maximum security in private organizations, we recommend pinning to a specific commit SHA.
 
@@ -98,7 +98,7 @@ This works on both Linux and Windows self-hosted runners.
 
 ## Development
 
-This repository contains a reusable GitHub Action. The action files (`action.yml` + `index.js`) live at the root so the action can be published and referenced as `cic-itd/prisma-cloud-teams-notifier`.
+This repository contains a reusable GitHub Action. The action files (`action.yml` + `index.js`) live at the root so the action can be published and referenced as `cic-itd/workflow-nodejs-prisma-cloud-teams-notification`.
 
 Sample files are located in the `samples/` directory.
 
@@ -115,7 +115,7 @@ To make this action available to other repositories in your private GitHub organ
 3. Publish the release
 4. Other repos can then reference it as:
    ```yaml
-   uses: cic-itd/prisma-cloud-teams-notifier@v1
+   uses: cic-itd/workflow-nodejs-prisma-cloud-teams-notification@v1
    ```
 
 ### Option 2: Pinning to a specific commit (most secure)
@@ -123,7 +123,7 @@ To make this action available to other repositories in your private GitHub organ
 1. Get the full commit SHA of the version you want to share
 2. Other repos reference it directly:
    ```yaml
-   uses: cic-itd/prisma-cloud-teams-notifier@abc123def456...
+   uses: cic-itd/workflow-nodejs-prisma-cloud-teams-notification@abc123def456...
    ```
 
 This method does **not** require creating releases and is preferred for private organization use.

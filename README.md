@@ -7,7 +7,8 @@ This action is designed for security and compliance workflows. It has first-clas
 ## Features
 
 - Dynamic title generated from SARIF result count (or use your own)
-- One FactSet per finding with Package, CVE ID, Severity, Current/Fixed/Compliant versions
+- One FactSet per finding with Package, File, CVE ID, Severity, Current/Fixed/Compliant versions
+- Automatic batching across multiple Adaptive Cards when findings exceed the per-card limit (configurable via `max_findings_per_card`)
 - Optional custom "View Details" URL
 - Fallback support for raw text output (`details_file`)
 - Works on GitHub-hosted and self-hosted runners (including Windows)
@@ -24,7 +25,8 @@ This action is designed for security and compliance workflows. It has first-clas
 | `sarif_file`   | No       | Path to a SARIF file – alternative to JSON |
 | `details_file` | No       | Path to a text file with multi-line content (fallback) |
 | `details_url`  | No       | Custom URL for the "View Details" button |
-| `details`      | No       | Inline multi-line text (lowest priority fallback) |
+| `details`               | No       | Inline multi-line text (lowest priority fallback) |
+| `max_findings_per_card` | No       | Maximum findings per Adaptive Card. Extra findings are sent in follow-up cards. Default: 20. Set to 0 for unlimited (not recommended for large scans). |
 
 ## Usage Examples
 

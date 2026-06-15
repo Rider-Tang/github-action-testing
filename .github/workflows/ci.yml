@@ -31,6 +31,7 @@ jobs:
 
     - name: Microsoft Teams Notification
       uses: ./
+      if: always()
       with:
         webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
         title: "${{ github.event.repository.name }} - Prisma Cloud SCA Scanning Results"

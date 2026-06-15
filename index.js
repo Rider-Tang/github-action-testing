@@ -48,8 +48,10 @@ function postJson(url, payload) {
 function createFindingFacts(result, isSarif) {
   if (isSarif) {
     const props = result.properties || {};
+    const filePath = result.locations?.[0]?.physicalLocation?.artifactLocation?.uri || '';
     return [
       { title: 'Package', value: props.package || '' },
+      { title: 'File', value: filePath },
       { title: 'CVE ID', value: props.cve || result.ruleId || '' },
       { title: 'Severity', value: (props.severity || result.level || 'unknown').toUpperCase() },
       { title: 'Current version', value: props.currentVersion || '' },
@@ -58,8 +60,10 @@ function createFindingFacts(result, isSarif) {
     ];
   } else {
     const vd = result.vulnerability_details || {};
+    const filePath = result.file_path || result.repo_file_path || '';
     return [
       { title: 'Package', value: vd.package_name || '' },
+      { title: 'File', value: filePath },
       { title: 'CVE ID', value: vd.id || result.bc_check_id || result.check_id || '' },
       { title: 'Severity', value: (result.severity || vd.severity || 'unknown').toUpperCase() },
       { title: 'Current version', value: vd.package_version || '' },

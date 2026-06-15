@@ -34,6 +34,10 @@ inputs:
     description: 'Optional URL for the "View Details" button. Falls back to a default URL if not provided.'
     required: false
     default: ''
+  max_findings_per_card:
+    description: 'Maximum number of findings to include per Adaptive Card. Extra findings are sent in follow-up cards. Set to 0 for unlimited (not recommended for large scans). Default: 2.'
+    required: false
+    default: '2'
 
 runs:
   using: 'node24'

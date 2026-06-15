@@ -245,7 +245,38 @@ async function run() {
     const maxPerCardInput = getInput('max_findings_per_card');
     const maxFindingsPerCard = parseInt(maxPerCardInput, 10) || 40;
 
-    if (sarifFile && fs.existsSync(sarifFile)) {
+    // Handle missing structured result files (explicit error card)
+    if (sarifFile && !fs.existsSync(sarifFile)) {
+      const bodyElements = [
+        {
+          type: 'TextBlock',
+          text: '⚠️ SARIF file not found',
+          weight: 'bolder',
+          color: 'attention'
+        },
+        {
+          type: 'TextBlock',
+          text: sarifFile,
+          spacing: 'small'
+        }
+      ];
+      await sendCard(bodyElements, detailsUrl, webhookUrl);
+    } else if (jsonFile && !fs.existsSync(jsonFile)) {
+      const bodyElements = [
+        {
+          type: 'TextBlock',
+          text: '⚠️ JSON file not found',
+          weight: 'bolder',
+          color: 'attention'
+        },
+        {
+          type: 'TextBlock',
+          text: jsonFile,
+          spacing: 'small'
+        }
+      ];
+      await sendCard(bodyElements, detailsUrl, webhookUrl);
+    } else if (sarifFile && fs.existsSync(sarifFile)) {
       try {
         const sarifContent = JSON.parse(fs.readFileSync(sarifFile, 'utf8'));
         const results = sarifContent.runs?.[0]?.results || [];
@@ -258,6 +289,20 @@ async function run() {
         await sendBatchedFindings(results, finalTitle, message, detailsUrl, maxFindingsPerCard, true, webhookUrl);
       } catch (e) {
         console.error(`::warning::Failed to parse SARIF file: ${e.message}`);
+        const bodyElements = [
+          {
+            type: 'TextBlock',
+            text: '⚠️ Failed to parse SARIF file',
+            weight: 'bolder',
+            color: 'attention'
+          },
+          {
+            type: 'TextBlock',
+            text: e.message,
+            spacing: 'small'
+          }
+        ];
+        await sendCard(bodyElements, detailsUrl, webhookUrl);
       }
     } else if (jsonFile && fs.existsSync(jsonFile)) {
       try {
@@ -275,6 +320,20 @@ async function run() {
         await sendBatchedFindings(failedChecks, finalTitle, message, detailsUrl, maxFindingsPerCard, false, webhookUrl);
       } catch (e) {
         console.error(`::warning::Failed to parse JSON file: ${e.message}`);
+        const bodyElements = [
+          {
+            type: 'TextBlock',
+            text: '⚠️ Failed to parse JSON file',
+            weight: 'bolder',
+            color: 'attention'
+          },
+          {
+            type: 'TextBlock',
+            text: e.message,
+            spacing: 'small'
+          }
+        ];
+        await sendCard(bodyElements, detailsUrl, webhookUrl);
       }
     } else if (detailsFile && fs.existsSync(detailsFile)) {
       const detailsContent = fs.readFileSync(detailsFile, 'utf8');

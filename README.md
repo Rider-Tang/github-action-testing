@@ -13,6 +13,7 @@ This action is designed for security and compliance workflows. It has first-clas
 - Fallback support for raw text output (`details_file`)
 - Works on GitHub-hosted and self-hosted runners (including Windows)
 - Uses the modern Power Automate webhook format (post-2026)
+- Error cards are posted when `sarif_file`/`json_file` is missing or cannot be parsed (with the file path or parse error shown)
 
 ## Inputs
 
@@ -21,8 +22,8 @@ This action is designed for security and compliance workflows. It has first-clas
 | `webhook_url`  | **Yes**  | Teams webhook URL from Power Automate ("Send webhook alerts to a channel") |
 | `title`        | No       | Card title. When omitted with `sarif_file` or `json_file`, a dynamic title is generated. |
 | `message`      | No       | Short summary line shown below the title |
-| `json_file`    | No       | Path to a JSON file (Prisma Cloud/Checkov SCA format) (recommended for security scans) |
-| `sarif_file`   | No       | Path to a SARIF file – alternative to JSON |
+| `json_file`    | No       | Path to a JSON file (Prisma Cloud/Checkov SCA format) (recommended for security scans). If the file is missing or unparseable, an error card is posted. |
+| `sarif_file`   | No       | Path to a SARIF file – alternative to JSON. If the file is missing or unparseable, an error card is posted. |
 | `details_file` | No       | Path to a text file with multi-line content (fallback) |
 | `details_url`  | No       | Custom URL for the "View Details" button |
 | `details`               | No       | Inline multi-line text (lowest priority fallback) |

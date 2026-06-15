@@ -26,7 +26,7 @@ This action is designed for security and compliance workflows. It has first-clas
 | `details_file` | No       | Path to a text file with multi-line content (fallback) |
 | `details_url`  | No       | Custom URL for the "View Details" button |
 | `details`               | No       | Inline multi-line text (lowest priority fallback) |
-| `max_findings_per_card` | No       | Maximum findings per Adaptive Card. Extra findings are sent in follow-up cards. Default: 50. Set to 0 for unlimited (not recommended for large scans). |
+| `max_findings_per_card` | No       | Maximum findings per Adaptive Card. Extra findings are sent in follow-up cards. Default: 40. Set to 0 for unlimited (not recommended for large scans). |
 
 ## Usage Examples
 

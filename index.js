@@ -139,12 +139,11 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
     const start = b * effectiveMax;
     const end = Math.min(start + effectiveMax, total);
     const batch = findings.slice(start, end);
-    const partInfo = numBatches > 1 ? ` (Part ${b + 1} of ${numBatches})` : '';
 
     const bodyElements = [
       {
         type: 'TextBlock',
-        text: finalTitle + partInfo,
+        text: finalTitle,
         weight: 'bolder',
         size: 'medium'
       }

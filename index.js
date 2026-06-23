@@ -158,9 +158,9 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
   ].join(' • ');
 
   const lowLine = [
-    severityCounts.MEDIUM > 0 ? `${severityCounts.MEDIUM} MEDIUM` : '0 MEDIUM',
-    severityCounts.LOW > 0 ? `${severityCounts.LOW} LOW` : '0 LOW',
-    severityCounts.UNKNOWN > 0 ? `${severityCounts.UNKNOWN} UNKNOWN` : '0 UNKNOWN'
+    `${severityCounts.MEDIUM > 0 ? severityCounts.MEDIUM : 0} 🟡 MEDIUM`,
+    `${severityCounts.LOW > 0 ? severityCounts.LOW : 0} 🟢 LOW`,
+    `${severityCounts.UNKNOWN > 0 ? severityCounts.UNKNOWN : 0} ⚪ UNKNOWN`
   ].join(' • ');
 
   const summaryBlocks = [

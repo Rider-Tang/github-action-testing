@@ -271,15 +271,6 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
         isSubtle: true
       });
 
-      if (b === 0) {
-        bodyElements.push({
-          type: 'TextBlock',
-          text: `Findings (${groupTotal} ${sevName.toLowerCase()})`,
-          weight: 'bolder',
-          spacing: 'medium'
-        });
-      }
-
       batch.forEach((result, idxInBatch) => {
         const globalIndex = start + idxInBatch;
         const findingFacts = createFindingFacts(result, isSarif);
@@ -320,13 +311,7 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
         isSubtle: true
       });
 
-      // Duplicate the Part/Findings context at the bottom for easy reference
-      bodyElements.push({
-        type: 'TextBlock',
-        text: `Findings (${groupTotal} ${sevName.toLowerCase()})`,
-        weight: 'bolder',
-        spacing: 'medium'
-      });
+      // Duplicate the Part context at the bottom for easy reference
       bodyElements.push({
         type: 'TextBlock',
         text: `Part ${b + 1} of ${numBatches} ${sevName.toLowerCase()} findings`,

@@ -73,6 +73,16 @@ function createFindingFacts(result, isSarif) {
   }
 }
 
+function getSeverity(result, isSarif) {
+  if (isSarif) {
+    const props = result.properties || {};
+    return (props.severity || result.level || 'unknown').toUpperCase();
+  } else {
+    const vd = result.vulnerability_details || {};
+    return (result.severity || vd.severity || 'unknown').toUpperCase();
+  }
+}
+
 function buildPayload(bodyElements, detailsUrl) {
   return {
     type: 'message',
@@ -142,6 +152,21 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
     return;
   }
 
+  // Pre-compute severity summary for all findings (shown on every card)
+  const severityCounts = { CRITICAL: 0, HIGH: 0, MEDIUM: 0, LOW: 0, UNKNOWN: 0 };
+  findings.forEach((result) => {
+    const sev = getSeverity(result, isSarif);
+    if (severityCounts[sev] !== undefined) severityCounts[sev]++;
+    else severityCounts.UNKNOWN++;
+  });
+  const summaryParts = [];
+  if (severityCounts.CRITICAL > 0) summaryParts.push(`${severityCounts.CRITICAL} 🔴 CRITICAL`);
+  if (severityCounts.HIGH > 0) summaryParts.push(`${severityCounts.HIGH} 🟠 HIGH`);
+  if (severityCounts.MEDIUM > 0) summaryParts.push(`${severityCounts.MEDIUM} MEDIUM`);
+  if (severityCounts.LOW > 0) summaryParts.push(`${severityCounts.LOW} LOW`);
+  if (severityCounts.UNKNOWN > 0) summaryParts.push(`${severityCounts.UNKNOWN} UNKNOWN`);
+  const summaryLine = `📊 Summary: ${summaryParts.join(' • ')} (Total: ${total})`;
+
   const effectiveMax = maxPerCard > 0 ? maxPerCard : total;
   const numBatches = Math.ceil(total / effectiveMax);
 
@@ -167,6 +192,13 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
       });
     }
 
+    // Report summary on every chunked card
+    bodyElements.push({
+      type: 'TextBlock',
+      text: summaryLine,
+      spacing: 'medium'
+    });
+
     if (numBatches > 1) {
       bodyElements.push({
         type: 'TextBlock',
@@ -189,15 +221,7 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
       const globalIndex = start + idxInBatch;
       const findingFacts = createFindingFacts(result, isSarif);
 
-      // Determine severity for styling
-      let severityForStyle = 'unknown';
-      if (isSarif) {
-        const props = result.properties || {};
-        severityForStyle = (props.severity || result.level || 'unknown').toUpperCase();
-      } else {
-        const vd = result.vulnerability_details || {};
-        severityForStyle = (result.severity || vd.severity || 'unknown').toUpperCase();
-      }
+      const severityForStyle = getSeverity(result, isSarif);
 
       if (globalIndex > 0) {
         bodyElements.push({

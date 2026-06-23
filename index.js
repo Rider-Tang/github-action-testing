@@ -97,6 +97,26 @@ const severityStyle = {
   UNKNOWN:  { emoji: '⚪', color: 'default' }
 };
 
+// Build the full summary block (header + scan id/time + FactSet table)
+// Works for both zero and non-zero findings.
+function buildSummaryBlocks(severityCounts, total, scanTimestamp, runId) {
+  const factSetData = [
+    { title: '🔴 CRITICAL', value: String(severityCounts.CRITICAL) },
+    { title: '🟠 HIGH',     value: String(severityCounts.HIGH) },
+    { title: '🟡 MEDIUM',   value: String(severityCounts.MEDIUM) },
+    { title: '🟢 LOW',      value: String(severityCounts.LOW) },
+    { title: '⚪ UNKNOWN',  value: String(severityCounts.UNKNOWN) },
+    { title: 'TOTAL',       value: `**${total}**` }
+  ];
+
+  return [
+    tb('📊 Summary', { weight: 'bolder', spacing: 'medium' }),
+    ...(runId ? [tb(`Scan id: ${runId}`, { spacing: 'small', isSubtle: true })] : []),
+    tb(`Scan time: ${scanTimestamp}`, { spacing: 'small', isSubtle: true }),
+    factSet(factSetData)
+  ];
+}
+
 function buildPayload(bodyElements, detailsUrl) {
   return {
     type: 'message',
@@ -216,47 +236,15 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
   // GitHub run identifier for traceability (available in workflow runs)
   const runId = process.env.GITHUB_RUN_ID || '';
 
-  // Build summary as a FactSet (table-like layout, same as findings)
-  // Always show all severity rows for consistent card layout (zeros appear when count is zero)
-  const summaryFactSet = factSet([
-    { title: '🔴 CRITICAL', value: String(severityCounts.CRITICAL) },
-    { title: '🟠 HIGH',     value: String(severityCounts.HIGH) },
-    { title: '🟡 MEDIUM',   value: String(severityCounts.MEDIUM) },
-    { title: '🟢 LOW',      value: String(severityCounts.LOW) },
-    { title: '⚪ UNKNOWN',  value: String(severityCounts.UNKNOWN) },
-    { title: 'TOTAL',       value: `**${total}**` }
-  ]);
-
-  const summaryBlocks = [
-    tb('📊 Summary', { weight: 'bolder', spacing: 'medium' }),
-    ...(runId ? [tb(`Scan id: ${runId}`, { spacing: 'small', isSubtle: true })] : []),
-    tb(`Scan time: ${scanTimestamp}`, { spacing: 'small', isSubtle: true }),
-    summaryFactSet
-  ];
+  // Build the unified summary block (FactSet table) for both zero and non-zero cases
+  const summaryBlocks = buildSummaryBlocks(severityCounts, total, scanTimestamp, runId);
 
   if (total === 0) {
-    // Build the summary explicitly as a FactSet for the empty case (consistent with non-empty)
-    const emptySummaryFactSet = factSet([
-      { title: '🔴 CRITICAL', value: '0' },
-      { title: '🟠 HIGH',     value: '0' },
-      { title: '🟡 MEDIUM',   value: '0' },
-      { title: '🟢 LOW',      value: '0' },
-      { title: '⚪ UNKNOWN',  value: '0' },
-      { title: 'TOTAL',       value: '**0**' }
-    ]);
-
-    const emptySummaryBlocks = [
-      tb('📊 Summary', { weight: 'bolder', spacing: 'medium' }),
-      ...(runId ? [tb(`Scan id: ${runId}`, { spacing: 'small', isSubtle: true })] : []),
-      tb(`Scan time: ${scanTimestamp}`, { spacing: 'small', isSubtle: true }),
-      emptySummaryFactSet
-    ];
-
     const bodyElements = [
       tb(finalTitle, { weight: 'bolder', size: 'medium' })
     ];
     if (message) bodyElements.push(tb(message, { spacing: 'medium' }));
-    bodyElements.push(...emptySummaryBlocks);
+    bodyElements.push(...summaryBlocks);
     bodyElements.push(tb('No vulnerabilities detected in this scan.', { spacing: 'medium', isSubtle: true }));
     await sendCard(bodyElements, detailsUrl, webhookUrl);
     return;

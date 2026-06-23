@@ -147,6 +147,9 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
     hour: '2-digit', minute: '2-digit', hour12: false
   }).replace(' ', ' ') + ' HKT';
 
+  // GitHub run identifier for traceability (available in workflow runs)
+  const runId = process.env.GITHUB_RUN_ID || '';
+
   // Build multi-line summary blocks (card width is limited, so avoid long single lines)
   // Always show all severity lines for consistent card layout (zeros appear when count is zero)
   const highLine = [
@@ -162,6 +165,7 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
 
   const summaryBlocks = [
     tb('📊 Summary', { weight: 'bolder', spacing: 'medium' }),
+    ...(runId ? [tb(`Scan id: ${runId}`, { spacing: 'small', isSubtle: true })] : []),
     tb(`Scan time: ${scanTimestamp}`, { spacing: 'small', isSubtle: true }),
     tb(highLine, { spacing: 'small' }),
     tb(lowLine, { spacing: 'small' }),
@@ -211,7 +215,8 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
       bodyElements.push(...summaryBlocks);
 
       // Batch indicator (bold header style)
-      const partLine = tb(`Part ${b + 1} of ${numBatches} ${sevName.toUpperCase()} findings`, {
+      const partPrefix = runId ? `${runId} - ` : '';
+      const partLine = tb(`${partPrefix}Part ${b + 1} of ${numBatches} ${sevName.toUpperCase()} findings`, {
         weight: 'bolder',
         spacing: 'medium'
       });

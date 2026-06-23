@@ -319,6 +319,21 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
         spacing: 'medium',
         isSubtle: true
       });
+
+      // Duplicate the Part/Findings context at the bottom for easy reference
+      bodyElements.push({
+        type: 'TextBlock',
+        text: `Findings (${groupTotal} ${sevName.toLowerCase()})`,
+        weight: 'bolder',
+        spacing: 'medium'
+      });
+      bodyElements.push({
+        type: 'TextBlock',
+        text: `Part ${b + 1} of ${numBatches} ${sevName.toLowerCase()} findings`,
+        spacing: 'medium',
+        isSubtle: true
+      });
+
       bodyElements.push(...summaryBlocks);
 
       const logSuffix = numBatches > 1 ? ` (batch ${b + 1}/${numBatches})` : '';

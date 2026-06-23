@@ -83,6 +83,10 @@ function getSeverity(result, isSarif) {
   }
 }
 
+// Tiny helpers to reduce TextBlock / FactSet boilerplate
+const tb = (text, opts = {}) => ({ type: 'TextBlock', text, ...opts });
+const factSet = (facts) => ({ type: 'FactSet', facts });
+
 function buildPayload(bodyElements, detailsUrl) {
   return {
     type: 'message',
@@ -128,26 +132,10 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
 
   if (total === 0) {
     const bodyElements = [
-      {
-        type: 'TextBlock',
-        text: finalTitle,
-        weight: 'bolder',
-        size: 'medium'
-      }
+      tb(finalTitle, { weight: 'bolder', size: 'medium' })
     ];
-    if (message) {
-      bodyElements.push({
-        type: 'TextBlock',
-        text: message,
-        spacing: 'medium'
-      });
-    }
-    bodyElements.push({
-      type: 'TextBlock',
-      text: 'No vulnerabilities detected in this scan.',
-      spacing: 'medium',
-      isSubtle: true
-    });
+    if (message) bodyElements.push(tb(message, { spacing: 'medium' }));
+    bodyElements.push(tb('No vulnerabilities detected in this scan.', { spacing: 'medium', isSubtle: true }));
     await sendCard(bodyElements, detailsUrl, webhookUrl);
     return;
   }
@@ -163,65 +151,29 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
   // Runtime timestamp for easy searching of card messages (SCA results have no scan time)
   // Use HKT (UTC+8) for the scan timestamp
   const now = new Date();
-  const hktFormatter = new Intl.DateTimeFormat('en-CA', {
+  const scanTimestamp = now.toLocaleString('sv-SE', {
     timeZone: 'Asia/Hong_Kong',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false
-  });
-  const parts = hktFormatter.formatToParts(now);
-  const y = parts.find((p) => p.type === 'year').value;
-  const m = parts.find((p) => p.type === 'month').value;
-  const d = parts.find((p) => p.type === 'day').value;
-  const h = parts.find((p) => p.type === 'hour').value;
-  const min = parts.find((p) => p.type === 'minute').value;
-  const scanTimestamp = `${y}-${m}-${d} ${h}:${min} HKT`;
+    year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit', hour12: false
+  }).replace(' ', ' ') + ' HKT';
 
   // Build multi-line summary blocks (card width is limited, so avoid long single lines)
+  const highParts = [];
+  if (severityCounts.CRITICAL > 0) highParts.push(`${severityCounts.CRITICAL} 🔴 CRITICAL`);
+  if (severityCounts.HIGH > 0) highParts.push(`${severityCounts.HIGH} 🟠 HIGH`);
+
+  const lowParts = [];
+  if (severityCounts.MEDIUM > 0) lowParts.push(`${severityCounts.MEDIUM} MEDIUM`);
+  if (severityCounts.LOW > 0) lowParts.push(`${severityCounts.LOW} LOW`);
+  if (severityCounts.UNKNOWN > 0) lowParts.push(`${severityCounts.UNKNOWN} UNKNOWN`);
+
   const summaryBlocks = [
-    {
-      type: 'TextBlock',
-      text: '📊 Summary',
-      weight: 'bolder',
-      spacing: 'medium'
-    },
-    {
-      type: 'TextBlock',
-      text: `Scan time: ${scanTimestamp}`,
-      spacing: 'small',
-      isSubtle: true
-    }
+    tb('📊 Summary', { weight: 'bolder', spacing: 'medium' }),
+    tb(`Scan time: ${scanTimestamp}`, { spacing: 'small', isSubtle: true }),
+    ...(highParts.length ? [tb(highParts.join(' • '), { spacing: 'small' })] : []),
+    ...(lowParts.length ? [tb(lowParts.join(' • '), { spacing: 'small' })] : []),
+    tb(`Total: ${total} findings`, { spacing: 'small', isSubtle: true })
   ];
-  const highLineParts = [];
-  if (severityCounts.CRITICAL > 0) highLineParts.push(`${severityCounts.CRITICAL} 🔴 CRITICAL`);
-  if (severityCounts.HIGH > 0) highLineParts.push(`${severityCounts.HIGH} 🟠 HIGH`);
-  if (highLineParts.length > 0) {
-    summaryBlocks.push({
-      type: 'TextBlock',
-      text: highLineParts.join(' • '),
-      spacing: 'small'
-    });
-  }
-  const lowLineParts = [];
-  if (severityCounts.MEDIUM > 0) lowLineParts.push(`${severityCounts.MEDIUM} MEDIUM`);
-  if (severityCounts.LOW > 0) lowLineParts.push(`${severityCounts.LOW} LOW`);
-  if (severityCounts.UNKNOWN > 0) lowLineParts.push(`${severityCounts.UNKNOWN} UNKNOWN`);
-  if (lowLineParts.length > 0) {
-    summaryBlocks.push({
-      type: 'TextBlock',
-      text: lowLineParts.join(' • '),
-      spacing: 'small'
-    });
-  }
-  summaryBlocks.push({
-    type: 'TextBlock',
-    text: `Total: ${total} findings`,
-    spacing: 'small',
-    isSubtle: true
-  });
 
   // Partition findings by severity so each group gets its own card(s)
   const groups = { CRITICAL: [], HIGH: [], MEDIUM: [], LOW: [], UNKNOWN: [] };
@@ -231,10 +183,9 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
   });
 
   const orderedSevs = ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW', 'UNKNOWN'];
-  let isFirstGroup = true;
 
   // Inner function: send cards for one severity group (respects maxPerCard chunking)
-  async function sendGroup(groupFindings, sevName) {
+  async function sendGroup(groupFindings, sevName, showMessage) {
     const groupTotal = groupFindings.length;
     const effectiveMax = maxPerCard > 0 ? maxPerCard : groupTotal;
     const numBatches = Math.ceil(groupTotal / effectiveMax);
@@ -245,31 +196,22 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
       const batch = groupFindings.slice(start, end);
 
       const bodyElements = [
-        {
-          type: 'TextBlock',
-          text: finalTitle,
-          weight: 'bolder',
-          size: 'medium'
-        }
+        tb(finalTitle, { weight: 'bolder', size: 'medium' })
       ];
 
-      if (message && isFirstGroup && b === 0) {
-        bodyElements.push({
-          type: 'TextBlock',
-          text: message,
-          spacing: 'medium'
-        });
+      if (message && showMessage && b === 0) {
+        bodyElements.push(tb(message, { spacing: 'medium' }));
       }
 
       // Report summary on every chunked card (multi-line for limited card width)
       bodyElements.push(...summaryBlocks);
 
-      bodyElements.push({
-        type: 'TextBlock',
-        text: `Part ${b + 1} of ${numBatches} ${sevName.toUpperCase()} findings`,
+      // Batch indicator (bold header style)
+      const partLine = tb(`Part ${b + 1} of ${numBatches} ${sevName.toUpperCase()} findings`, {
         weight: 'bolder',
         spacing: 'medium'
       });
+      bodyElements.push(partLine);
 
       batch.forEach((result, idxInBatch) => {
         const globalIndex = start + idxInBatch;
@@ -277,59 +219,33 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
         const severityForStyle = getSeverity(result, isSarif);
 
         if (globalIndex > 0) {
-          bodyElements.push({
-            type: 'TextBlock',
-            text: '---',
-            spacing: 'medium',
-            isSubtle: true
-          });
+          bodyElements.push(tb('---', { spacing: 'medium', isSubtle: true }));
         }
 
         if (severityForStyle === 'CRITICAL' || severityForStyle === 'HIGH') {
           const indicatorColor = 'attention';
           const indicatorText = severityForStyle === 'CRITICAL' ? '🔴 CRITICAL' : '🟠 HIGH';
-          bodyElements.push({
-            type: 'TextBlock',
-            text: indicatorText,
-            weight: 'bolder',
-            color: indicatorColor,
-            spacing: 'small'
-          });
+          bodyElements.push(tb(indicatorText, { weight: 'bolder', color: indicatorColor, spacing: 'small' }));
         }
 
-        bodyElements.push({
-          type: 'FactSet',
-          facts: findingFacts
-        });
+        bodyElements.push(factSet(findingFacts));
       });
 
-      // Report summary at the bottom of each card as well
-      bodyElements.push({
-        type: 'TextBlock',
-        text: '---',
-        spacing: 'medium',
-        isSubtle: true
-      });
-
-      // Duplicate the Part context at the bottom for easy reference
-      bodyElements.push({
-        type: 'TextBlock',
-        text: `Part ${b + 1} of ${numBatches} ${sevName.toUpperCase()} findings`,
-        weight: 'bolder',
-        spacing: 'medium'
-      });
-
+      // Bottom section: separator + duplicate Part line + summary
+      bodyElements.push(tb('---', { spacing: 'medium', isSubtle: true }));
+      bodyElements.push(partLine); // reuse the same object (safe for this payload)
       bodyElements.push(...summaryBlocks);
 
       const logSuffix = numBatches > 1 ? ` (batch ${b + 1}/${numBatches})` : '';
       await sendCard(bodyElements, detailsUrl, webhookUrl, logSuffix);
     }
-    isFirstGroup = false;
   }
 
+  let first = true;
   for (const sev of orderedSevs) {
     if (groups[sev].length > 0) {
-      await sendGroup(groups[sev], sev);
+      await sendGroup(groups[sev], sev, first);
+      first = false;
     }
   }
 }
@@ -345,7 +261,7 @@ async function run() {
     let detailsUrl = getInput('details_url');
     const jsonFile = getInput('json_file');
     const maxPerCardInput = getInput('max_findings_per_card');
-    const maxFindingsPerCard = parseInt(maxPerCardInput, 10) || 40;
+    const maxFindingsPerCard = Math.max(0, parseInt(maxPerCardInput, 10) || 40);
 
     // Handle missing structured result files (explicit error card)
     if (sarifFile && !fs.existsSync(sarifFile)) {

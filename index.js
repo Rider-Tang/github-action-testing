@@ -256,10 +256,11 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
         bodyElements.push(factSet(findingFacts));
       });
 
-      // Bottom section: separator + duplicate Part line + summary
+      // Bottom section: separator + summary + separator + batch indicator (mirrors top layout)
+      bodyElements.push(tb('---', { spacing: 'medium', isSubtle: true }));
+      bodyElements.push(...summaryBlocks);
       bodyElements.push(tb('---', { spacing: 'medium', isSubtle: true }));
       bodyElements.push(partLine); // reuse the same object (safe for this payload)
-      bodyElements.push(...summaryBlocks);
 
       const logSuffix = numBatches > 1 ? ` (batch ${b + 1}/${numBatches})` : '';
       await sendCard(bodyElements, detailsUrl, webhookUrl, logSuffix);

@@ -130,16 +130,6 @@ async function sendCard(bodyElements, detailsUrl, webhookUrl, logSuffix = '') {
 async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, maxPerCard, isSarif, webhookUrl) {
   const total = findings.length;
 
-  if (total === 0) {
-    const bodyElements = [
-      tb(finalTitle, { weight: 'bolder', size: 'medium' })
-    ];
-    if (message) bodyElements.push(tb(message, { spacing: 'medium' }));
-    bodyElements.push(tb('No vulnerabilities detected in this scan.', { spacing: 'medium', isSubtle: true }));
-    await sendCard(bodyElements, detailsUrl, webhookUrl);
-    return;
-  }
-
   // Pre-compute severity summary for all findings (shown on every card)
   const severityCounts = { CRITICAL: 0, HIGH: 0, MEDIUM: 0, LOW: 0, UNKNOWN: 0 };
   findings.forEach((result) => {
@@ -174,6 +164,17 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
     ...(lowParts.length ? [tb(lowParts.join(' • '), { spacing: 'small' })] : []),
     tb(`Total: ${total} findings`, { spacing: 'small', isSubtle: true })
   ];
+
+  if (total === 0) {
+    const bodyElements = [
+      tb(finalTitle, { weight: 'bolder', size: 'medium' })
+    ];
+    if (message) bodyElements.push(tb(message, { spacing: 'medium' }));
+    bodyElements.push(...summaryBlocks);
+    bodyElements.push(tb('No vulnerabilities detected in this scan.', { spacing: 'medium', isSubtle: true }));
+    await sendCard(bodyElements, detailsUrl, webhookUrl);
+    return;
+  }
 
   // Partition findings by severity so each group gets its own card(s)
   const groups = { CRITICAL: [], HIGH: [], MEDIUM: [], LOW: [], UNKNOWN: [] };

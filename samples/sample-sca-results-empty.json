@@ -1,0 +1,18 @@
+{
+    "check_type": "sca_package",
+    "results": {
+        "passed_checks": [],
+        "failed_checks": [],
+        "skipped_checks": [],
+        "parsing_errors": []
+    },
+    "summary": {
+        "passed": 0,
+        "failed": 19,
+        "skipped": 0,
+        "parsing_errors": 0,
+        "resource_count": 4,
+        "checkov_version": "3.2.527"
+    },
+    "url": "https://app.sg.prismacloud.io/projects?branch=bc-396a017_develop&repoUUID=4f64517c-3219-4bf2-9b77-3d1113f833fe&runId=latest&viewId=CICDRuns"
+}

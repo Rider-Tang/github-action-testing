@@ -231,10 +231,21 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
           bodyElements.push(tb('---', { spacing: 'medium', isSubtle: true }));
         }
 
-        if (severityForStyle === 'CRITICAL' || severityForStyle === 'HIGH') {
-          const indicatorColor = 'attention';
-          const indicatorText = severityForStyle === 'CRITICAL' ? '🔴 CRITICAL' : '🟠 HIGH';
-          bodyElements.push(tb(indicatorText, { weight: 'bolder', color: indicatorColor, spacing: 'small' }));
+        // Colored severity indicator for all levels (aligned design)
+        const severityStyle = {
+          CRITICAL: { emoji: '🔴', color: 'attention' },
+          HIGH:     { emoji: '🟠', color: 'attention' },
+          MEDIUM:   { emoji: '🟡', color: 'warning' },
+          LOW:      { emoji: '🟢', color: 'good' },
+          UNKNOWN:  { emoji: '⚪', color: 'default' }
+        };
+        const style = severityStyle[severityForStyle];
+        if (style) {
+          bodyElements.push(tb(`${style.emoji} ${severityForStyle}`, {
+            weight: 'bolder',
+            color: style.color,
+            spacing: 'small'
+          }));
         }
 
         bodyElements.push(factSet(findingFacts));

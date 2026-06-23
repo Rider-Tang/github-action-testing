@@ -207,6 +207,9 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
         bodyElements.push(tb(message, { spacing: 'medium' }));
       }
 
+      // Split line at the very top of the upper summary
+      bodyElements.push(tb('---', { spacing: 'medium', isSubtle: true }));
+
       // Report summary on every chunked card (multi-line for limited card width)
       bodyElements.push(...summaryBlocks);
 

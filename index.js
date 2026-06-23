@@ -267,7 +267,7 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
       if (numBatches > 1) {
         bodyElements.push({
           type: 'TextBlock',
-          text: `Part ${b + 1} of ${numBatches} findings`,
+          text: `Part ${b + 1} of ${numBatches} ${sevName.toLowerCase()} findings`,
           spacing: 'medium',
           isSubtle: true
         });

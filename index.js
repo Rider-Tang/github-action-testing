@@ -264,14 +264,12 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
       // Report summary on every chunked card (multi-line for limited card width)
       bodyElements.push(...summaryBlocks);
 
-      if (numBatches > 1) {
-        bodyElements.push({
-          type: 'TextBlock',
-          text: `Part ${b + 1} of ${numBatches} ${sevName.toLowerCase()} findings`,
-          spacing: 'medium',
-          isSubtle: true
-        });
-      }
+      bodyElements.push({
+        type: 'TextBlock',
+        text: `Part ${b + 1} of ${numBatches} ${sevName.toLowerCase()} findings`,
+        spacing: 'medium',
+        isSubtle: true
+      });
 
       if (b === 0) {
         bodyElements.push({

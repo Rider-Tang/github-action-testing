@@ -161,8 +161,24 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
   });
 
   // Runtime timestamp for easy searching of card messages (SCA results have no scan time)
+  // Use HKT (UTC+8) for the scan timestamp
   const now = new Date();
-  const scanTimestamp = now.toISOString().replace('T', ' ').replace(/\.\d+Z$/, ' UTC');
+  const hktFormatter = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Hong_Kong',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
+  });
+  const parts = hktFormatter.formatToParts(now);
+  const y = parts.find((p) => p.type === 'year').value;
+  const m = parts.find((p) => p.type === 'month').value;
+  const d = parts.find((p) => p.type === 'day').value;
+  const h = parts.find((p) => p.type === 'hour').value;
+  const min = parts.find((p) => p.type === 'minute').value;
+  const scanTimestamp = `${y}-${m}-${d} ${h}:${min} HKT`;
 
   // Build multi-line summary blocks (card width is limited, so avoid long single lines)
   const summaryBlocks = [

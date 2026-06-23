@@ -207,11 +207,8 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
         bodyElements.push(tb(message, { spacing: 'medium' }));
       }
 
-      // Split line at the very top of the upper summary
+      // Split line at the very top of the upper section
       bodyElements.push(tb('---', { spacing: 'medium', isSubtle: true }));
-
-      // Report summary on every chunked card (multi-line for limited card width)
-      bodyElements.push(...summaryBlocks);
 
       // Batch indicator (bold header style)
       const partPrefix = runId ? `${runId} - ` : '';
@@ -221,7 +218,13 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
       });
       bodyElements.push(partLine);
 
-      // Split line between batch indicator and findings list
+      // Split line after batch indicator (before summary)
+      bodyElements.push(tb('---', { spacing: 'medium', isSubtle: true }));
+
+      // Report summary on every chunked card (multi-line for limited card width)
+      bodyElements.push(...summaryBlocks);
+
+      // Split line between summary and findings list
       bodyElements.push(tb('---', { spacing: 'medium', isSubtle: true }));
 
       batch.forEach((result, idxInBatch) => {

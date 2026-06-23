@@ -152,6 +152,15 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
     return;
   }
 
+  // Sort findings by severity (CRITICAL → HIGH → MEDIUM → LOW → UNKNOWN)
+  // so cards are grouped by severity while still respecting chunk limits
+  const severityPriority = { CRITICAL: 1, HIGH: 2, MEDIUM: 3, LOW: 4, UNKNOWN: 5 };
+  findings.sort((a, b) => {
+    const sa = getSeverity(a, isSarif);
+    const sb = getSeverity(b, isSarif);
+    return (severityPriority[sa] || 99) - (severityPriority[sb] || 99);
+  });
+
   // Pre-compute severity summary for all findings (shown on every card)
   const severityCounts = { CRITICAL: 0, HIGH: 0, MEDIUM: 0, LOW: 0, UNKNOWN: 0 };
   findings.forEach((result) => {

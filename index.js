@@ -86,6 +86,16 @@ function getSeverity(result, isSarif) {
 // Tiny helpers to reduce TextBlock / FactSet boilerplate
 const tb = (text, opts = {}) => ({ type: 'TextBlock', text, ...opts });
 const factSet = (facts) => ({ type: 'FactSet', facts });
+const sep = () => tb('---', { spacing: 'medium', isSubtle: true });
+
+// Static severity styling lookup (hoisted for clarity and reuse)
+const severityStyle = {
+  CRITICAL: { emoji: '🔴', color: 'attention' },
+  HIGH:     { emoji: '🟠', color: 'attention' },
+  MEDIUM:   { emoji: '🟡', color: 'warning' },
+  LOW:      { emoji: '🟢', color: 'good' },
+  UNKNOWN:  { emoji: '⚪', color: 'default' }
+};
 
 function buildPayload(bodyElements, detailsUrl) {
   return {
@@ -125,6 +135,62 @@ async function sendCard(bodyElements, detailsUrl, webhookUrl, logSuffix = '') {
   console.log(`Sending Adaptive Card${logSuffix} to Microsoft Teams webhook...`);
   await postJson(webhookUrl, payload);
   console.log(`Notification sent successfully${logSuffix}.`);
+}
+
+// Build the bodyElements array for a single Adaptive Card (one batch).
+// Encapsulates the complex separator + content ordering so sendGroup stays clean.
+function buildBatchBodyElements({
+  finalTitle,
+  message,
+  showMessageOnThisCard,
+  summaryBlocks,
+  partLine,
+  batch,
+  start,
+  isSarif
+}) {
+  const bodyElements = [
+    tb(finalTitle, { weight: 'bolder', size: 'medium' })
+  ];
+
+  if (showMessageOnThisCard) {
+    bodyElements.push(tb(message, { spacing: 'medium' }));
+  }
+
+  bodyElements.push(sep());           // top separator
+  bodyElements.push(partLine);
+  bodyElements.push(sep());           // after batch indicator
+  bodyElements.push(...summaryBlocks);
+  bodyElements.push(sep());           // after summary
+
+  batch.forEach((result, idxInBatch) => {
+    const globalIndex = start + idxInBatch;
+    const findingFacts = createFindingFacts(result, isSarif);
+    const severityForStyle = getSeverity(result, isSarif);
+
+    if (globalIndex > 0) {
+      bodyElements.push(sep());
+    }
+
+    const style = severityStyle[severityForStyle];
+    if (style) {
+      bodyElements.push(tb(`${style.emoji} ${severityForStyle}`, {
+        weight: 'bolder',
+        color: style.color,
+        spacing: 'small'
+      }));
+    }
+
+    bodyElements.push(factSet(findingFacts));
+  });
+
+  // Bottom section (mirrors top layout)
+  bodyElements.push(sep());
+  bodyElements.push(...summaryBlocks);
+  bodyElements.push(sep());
+  bodyElements.push(partLine);
+
+  return bodyElements;
 }
 
 async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, maxPerCard, isSarif, webhookUrl) {
@@ -189,7 +255,7 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
   const orderedSevs = ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW', 'UNKNOWN'];
 
   // Inner function: send cards for one severity group (respects maxPerCard chunking)
-  async function sendGroup(groupFindings, sevName, showMessage) {
+  async function sendGroup(groupFindings, sevName, showMessageOnFirstCard) {
     const groupTotal = groupFindings.length;
     const effectiveMax = maxPerCard > 0 ? maxPerCard : groupTotal;
     const numBatches = Math.ceil(groupTotal / effectiveMax);
@@ -199,79 +265,35 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
       const end = Math.min(start + effectiveMax, groupTotal);
       const batch = groupFindings.slice(start, end);
 
-      const bodyElements = [
-        tb(finalTitle, { weight: 'bolder', size: 'medium' })
-      ];
-
-      if (message && showMessage && b === 0) {
-        bodyElements.push(tb(message, { spacing: 'medium' }));
-      }
-
-      // Split line at the very top of the upper section
-      bodyElements.push(tb('---', { spacing: 'medium', isSubtle: true }));
-
-      // Batch indicator (bold header style)
       const partPrefix = runId ? `${runId} - ` : '';
       const partLine = tb(`${partPrefix}Part ${b + 1} of ${numBatches} ${sevName.toUpperCase()} findings`, {
         weight: 'bolder',
         spacing: 'medium'
       });
-      bodyElements.push(partLine);
 
-      // Split line after batch indicator (before summary)
-      bodyElements.push(tb('---', { spacing: 'medium', isSubtle: true }));
+      const showMessageOnThisCard = showMessageOnFirstCard && b === 0;
 
-      // Report summary on every chunked card (multi-line for limited card width)
-      bodyElements.push(...summaryBlocks);
-
-      // Split line between summary and findings list
-      bodyElements.push(tb('---', { spacing: 'medium', isSubtle: true }));
-
-      batch.forEach((result, idxInBatch) => {
-        const globalIndex = start + idxInBatch;
-        const findingFacts = createFindingFacts(result, isSarif);
-        const severityForStyle = getSeverity(result, isSarif);
-
-        if (globalIndex > 0) {
-          bodyElements.push(tb('---', { spacing: 'medium', isSubtle: true }));
-        }
-
-        // Colored severity indicator for all levels (aligned design)
-        const severityStyle = {
-          CRITICAL: { emoji: '🔴', color: 'attention' },
-          HIGH:     { emoji: '🟠', color: 'attention' },
-          MEDIUM:   { emoji: '🟡', color: 'warning' },
-          LOW:      { emoji: '🟢', color: 'good' },
-          UNKNOWN:  { emoji: '⚪', color: 'default' }
-        };
-        const style = severityStyle[severityForStyle];
-        if (style) {
-          bodyElements.push(tb(`${style.emoji} ${severityForStyle}`, {
-            weight: 'bolder',
-            color: style.color,
-            spacing: 'small'
-          }));
-        }
-
-        bodyElements.push(factSet(findingFacts));
+      const bodyElements = buildBatchBodyElements({
+        finalTitle,
+        message,
+        showMessageOnThisCard,
+        summaryBlocks,
+        partLine,
+        batch,
+        start,
+        isSarif
       });
-
-      // Bottom section: separator + summary + separator + batch indicator (mirrors top layout)
-      bodyElements.push(tb('---', { spacing: 'medium', isSubtle: true }));
-      bodyElements.push(...summaryBlocks);
-      bodyElements.push(tb('---', { spacing: 'medium', isSubtle: true }));
-      bodyElements.push(partLine); // reuse the same object (safe for this payload)
 
       const logSuffix = numBatches > 1 ? ` (batch ${b + 1}/${numBatches})` : '';
       await sendCard(bodyElements, detailsUrl, webhookUrl, logSuffix);
     }
   }
 
-  let first = true;
+  let isFirstGroup = true;
   for (const sev of orderedSevs) {
     if (groups[sev].length > 0) {
-      await sendGroup(groups[sev], sev, first);
-      first = false;
+      await sendGroup(groups[sev], sev, isFirstGroup);
+      isFirstGroup = false;
     }
   }
 }

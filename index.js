@@ -150,26 +150,22 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
   // GitHub run identifier for traceability (available in workflow runs)
   const runId = process.env.GITHUB_RUN_ID || '';
 
-  // Build multi-line summary blocks (card width is limited, so avoid long single lines)
-  // Always show all severity lines for consistent card layout (zeros appear when count is zero)
-  const highLine = [
-    severityCounts.CRITICAL > 0 ? `${severityCounts.CRITICAL} 🔴 CRITICAL` : '0 🔴 CRITICAL',
-    severityCounts.HIGH > 0 ? `${severityCounts.HIGH} 🟠 HIGH` : '0 🟠 HIGH'
-  ].join(' • ');
-
-  const lowLine = [
-    `${severityCounts.MEDIUM > 0 ? severityCounts.MEDIUM : 0} 🟡 MEDIUM`,
-    `${severityCounts.LOW > 0 ? severityCounts.LOW : 0} 🟢 LOW`,
-    `${severityCounts.UNKNOWN > 0 ? severityCounts.UNKNOWN : 0} ⚪ UNKNOWN`
-  ].join(' • ');
+  // Build summary as a FactSet (table-like layout, same as findings)
+  // Always show all severity rows for consistent card layout (zeros appear when count is zero)
+  const summaryFactSet = factSet([
+    { title: '🔴 CRITICAL', value: String(severityCounts.CRITICAL) },
+    { title: '🟠 HIGH',     value: String(severityCounts.HIGH) },
+    { title: '🟡 MEDIUM',   value: String(severityCounts.MEDIUM) },
+    { title: '🟢 LOW',      value: String(severityCounts.LOW) },
+    { title: '⚪ UNKNOWN',  value: String(severityCounts.UNKNOWN) }
+  ]);
 
   const summaryBlocks = [
     tb('📊 Summary', { weight: 'bolder', spacing: 'medium' }),
     ...(runId ? [tb(`Scan id: ${runId}`, { spacing: 'small', isSubtle: true })] : []),
     tb(`Scan time: ${scanTimestamp}`, { spacing: 'small', isSubtle: true }),
-    tb(highLine, { spacing: 'small' }),
-    tb(lowLine, { spacing: 'small' }),
-    tb(`Total: ${total} findings`, { spacing: 'small', isSubtle: true })
+    summaryFactSet,
+    tb(`Total: ${total} findings`, { weight: 'bolder', spacing: 'small' })
   ];
 
   if (total === 0) {

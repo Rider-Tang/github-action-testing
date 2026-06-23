@@ -166,11 +166,18 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
   ];
 
   if (total === 0) {
+    const zeroSummary = [
+      tb('📊 Summary', { weight: 'bolder', spacing: 'medium' }),
+      tb(`Scan time: ${scanTimestamp}`, { spacing: 'small', isSubtle: true }),
+      tb('0 🔴 CRITICAL • 0 🟠 HIGH', { spacing: 'small' }),
+      tb('0 MEDIUM • 0 LOW', { spacing: 'small' }),
+      tb('Total: 0 findings', { spacing: 'small', isSubtle: true })
+    ];
     const bodyElements = [
       tb(finalTitle, { weight: 'bolder', size: 'medium' })
     ];
     if (message) bodyElements.push(tb(message, { spacing: 'medium' }));
-    bodyElements.push(...summaryBlocks);
+    bodyElements.push(...zeroSummary);
     bodyElements.push(tb('No vulnerabilities detected in this scan.', { spacing: 'medium', isSubtle: true }));
     await sendCard(bodyElements, detailsUrl, webhookUrl);
     return;

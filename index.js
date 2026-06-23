@@ -157,15 +157,15 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
     { title: '🟠 HIGH',     value: String(severityCounts.HIGH) },
     { title: '🟡 MEDIUM',   value: String(severityCounts.MEDIUM) },
     { title: '🟢 LOW',      value: String(severityCounts.LOW) },
-    { title: '⚪ UNKNOWN',  value: String(severityCounts.UNKNOWN) }
+    { title: '⚪ UNKNOWN',  value: String(severityCounts.UNKNOWN) },
+    { title: 'TOTAL',       value: `**${total}**` }
   ]);
 
   const summaryBlocks = [
     tb('📊 Summary', { weight: 'bolder', spacing: 'medium' }),
     ...(runId ? [tb(`Scan id: ${runId}`, { spacing: 'small', isSubtle: true })] : []),
     tb(`Scan time: ${scanTimestamp}`, { spacing: 'small', isSubtle: true }),
-    summaryFactSet,
-    tb(`Total: ${total} findings`, { weight: 'bolder', spacing: 'small' })
+    summaryFactSet
   ];
 
   if (total === 0) {

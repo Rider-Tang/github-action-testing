@@ -277,6 +277,15 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
       });
     });
 
+    // Report summary at the bottom of each card as well
+    bodyElements.push({
+      type: 'TextBlock',
+      text: '---',
+      spacing: 'medium',
+      isSubtle: true
+    });
+    bodyElements.push(...summaryBlocks);
+
     const logSuffix = numBatches > 1 ? ` (batch ${b + 1}/${numBatches})` : '';
     await sendCard(bodyElements, detailsUrl, webhookUrl, logSuffix);
   }

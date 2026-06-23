@@ -160,6 +160,10 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
     else severityCounts.UNKNOWN++;
   });
 
+  // Runtime timestamp for easy searching of card messages (SCA results have no scan time)
+  const now = new Date();
+  const scanTimestamp = now.toISOString().replace('T', ' ').replace(/\.\d+Z$/, ' UTC');
+
   // Build multi-line summary blocks (card width is limited, so avoid long single lines)
   const summaryBlocks = [
     {
@@ -167,6 +171,12 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
       text: '📊 Summary',
       weight: 'bolder',
       spacing: 'medium'
+    },
+    {
+      type: 'TextBlock',
+      text: `Scan time: ${scanTimestamp}`,
+      spacing: 'small',
+      isSubtle: true
     }
   ];
   const highLineParts = [];

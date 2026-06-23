@@ -14,6 +14,9 @@ This action is designed for security and compliance workflows. It has first-clas
 - Works on GitHub-hosted and self-hosted runners (including Windows)
 - Uses the modern Power Automate webhook format (post-2026)
 - Error cards are posted when `sarif_file`/`json_file` is missing or cannot be parsed (with the file path or parse error shown)
+- Report summary (📊 Summary) with HKT (UTC+8) scan timestamp, severity breakdown, and total count is shown on **every** Adaptive Card (top and bottom) for easy searching in Teams
+- Findings are grouped by severity (CRITICAL → HIGH → MEDIUM → LOW → UNKNOWN); each non-empty group produces its own card(s) while respecting `max_findings_per_card`
+- Zero-finding cards still include the full summary block (`0 🔴 CRITICAL • 0 🟠 HIGH … Total: 0 findings`) for consistent layout
 
 ## Inputs
 

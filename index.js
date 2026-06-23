@@ -148,36 +148,32 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
   }).replace(' ', ' ') + ' HKT';
 
   // Build multi-line summary blocks (card width is limited, so avoid long single lines)
-  const highParts = [];
-  if (severityCounts.CRITICAL > 0) highParts.push(`${severityCounts.CRITICAL} 🔴 CRITICAL`);
-  if (severityCounts.HIGH > 0) highParts.push(`${severityCounts.HIGH} 🟠 HIGH`);
+  // Always show all severity lines for consistent card layout (zeros appear when count is zero)
+  const highLine = [
+    severityCounts.CRITICAL > 0 ? `${severityCounts.CRITICAL} 🔴 CRITICAL` : '0 🔴 CRITICAL',
+    severityCounts.HIGH > 0 ? `${severityCounts.HIGH} 🟠 HIGH` : '0 🟠 HIGH'
+  ].join(' • ');
 
-  const lowParts = [];
-  if (severityCounts.MEDIUM > 0) lowParts.push(`${severityCounts.MEDIUM} MEDIUM`);
-  if (severityCounts.LOW > 0) lowParts.push(`${severityCounts.LOW} LOW`);
-  if (severityCounts.UNKNOWN > 0) lowParts.push(`${severityCounts.UNKNOWN} UNKNOWN`);
+  const lowLine = [
+    severityCounts.MEDIUM > 0 ? `${severityCounts.MEDIUM} MEDIUM` : '0 MEDIUM',
+    severityCounts.LOW > 0 ? `${severityCounts.LOW} LOW` : '0 LOW',
+    severityCounts.UNKNOWN > 0 ? `${severityCounts.UNKNOWN} UNKNOWN` : '0 UNKNOWN'
+  ].join(' • ');
 
   const summaryBlocks = [
     tb('📊 Summary', { weight: 'bolder', spacing: 'medium' }),
     tb(`Scan time: ${scanTimestamp}`, { spacing: 'small', isSubtle: true }),
-    ...(highParts.length ? [tb(highParts.join(' • '), { spacing: 'small' })] : []),
-    ...(lowParts.length ? [tb(lowParts.join(' • '), { spacing: 'small' })] : []),
+    tb(highLine, { spacing: 'small' }),
+    tb(lowLine, { spacing: 'small' }),
     tb(`Total: ${total} findings`, { spacing: 'small', isSubtle: true })
   ];
 
   if (total === 0) {
-    const zeroSummary = [
-      tb('📊 Summary', { weight: 'bolder', spacing: 'medium' }),
-      tb(`Scan time: ${scanTimestamp}`, { spacing: 'small', isSubtle: true }),
-      tb('0 🔴 CRITICAL • 0 🟠 HIGH', { spacing: 'small' }),
-      tb('0 MEDIUM • 0 LOW', { spacing: 'small' }),
-      tb('Total: 0 findings', { spacing: 'small', isSubtle: true })
-    ];
     const bodyElements = [
       tb(finalTitle, { weight: 'bolder', size: 'medium' })
     ];
     if (message) bodyElements.push(tb(message, { spacing: 'medium' }));
-    bodyElements.push(...zeroSummary);
+    bodyElements.push(...summaryBlocks);
     bodyElements.push(tb('No vulnerabilities detected in this scan.', { spacing: 'medium', isSubtle: true }));
     await sendCard(bodyElements, detailsUrl, webhookUrl);
     return;
@@ -273,35 +269,15 @@ async function run() {
 
     // Handle missing structured result files (explicit error card)
     if (sarifFile && !fs.existsSync(sarifFile)) {
-      const bodyElements = [
-        {
-          type: 'TextBlock',
-          text: '⚠️ SARIF file not found',
-          weight: 'bolder',
-          color: 'attention'
-        },
-        {
-          type: 'TextBlock',
-          text: sarifFile,
-          spacing: 'small'
-        }
-      ];
-      await sendCard(bodyElements, detailsUrl, webhookUrl);
+      await sendCard([
+        tb('⚠️ SARIF file not found', { weight: 'bolder', color: 'attention' }),
+        tb(sarifFile, { spacing: 'small' })
+      ], detailsUrl, webhookUrl);
     } else if (jsonFile && !fs.existsSync(jsonFile)) {
-      const bodyElements = [
-        {
-          type: 'TextBlock',
-          text: '⚠️ JSON file not found',
-          weight: 'bolder',
-          color: 'attention'
-        },
-        {
-          type: 'TextBlock',
-          text: jsonFile,
-          spacing: 'small'
-        }
-      ];
-      await sendCard(bodyElements, detailsUrl, webhookUrl);
+      await sendCard([
+        tb('⚠️ JSON file not found', { weight: 'bolder', color: 'attention' }),
+        tb(jsonFile, { spacing: 'small' })
+      ], detailsUrl, webhookUrl);
     } else if (sarifFile && fs.existsSync(sarifFile)) {
       try {
         const sarifContent = JSON.parse(fs.readFileSync(sarifFile, 'utf8'));
@@ -315,20 +291,10 @@ async function run() {
         await sendBatchedFindings(results, finalTitle, message, detailsUrl, maxFindingsPerCard, true, webhookUrl);
       } catch (e) {
         console.error(`::warning::Failed to parse SARIF file: ${e.message}`);
-        const bodyElements = [
-          {
-            type: 'TextBlock',
-            text: '⚠️ Failed to parse SARIF file',
-            weight: 'bolder',
-            color: 'attention'
-          },
-          {
-            type: 'TextBlock',
-            text: e.message,
-            spacing: 'small'
-          }
-        ];
-        await sendCard(bodyElements, detailsUrl, webhookUrl);
+        await sendCard([
+          tb('⚠️ Failed to parse SARIF file', { weight: 'bolder', color: 'attention' }),
+          tb(e.message, { spacing: 'small' })
+        ], detailsUrl, webhookUrl);
       }
     } else if (jsonFile && fs.existsSync(jsonFile)) {
       try {
@@ -346,99 +312,30 @@ async function run() {
         await sendBatchedFindings(failedChecks, finalTitle, message, detailsUrl, maxFindingsPerCard, false, webhookUrl);
       } catch (e) {
         console.error(`::warning::Failed to parse JSON file: ${e.message}`);
-        const bodyElements = [
-          {
-            type: 'TextBlock',
-            text: '⚠️ Failed to parse JSON file',
-            weight: 'bolder',
-            color: 'attention'
-          },
-          {
-            type: 'TextBlock',
-            text: e.message,
-            spacing: 'small'
-          }
-        ];
-        await sendCard(bodyElements, detailsUrl, webhookUrl);
+        await sendCard([
+          tb('⚠️ Failed to parse JSON file', { weight: 'bolder', color: 'attention' }),
+          tb(e.message, { spacing: 'small' })
+        ], detailsUrl, webhookUrl);
       }
     } else if (detailsFile && fs.existsSync(detailsFile)) {
       const detailsContent = fs.readFileSync(detailsFile, 'utf8');
       const safeDetails = detailsContent.replace(/```/g, '`` `');
-      const bodyElements = [
-        {
-          type: 'TextBlock',
-          text: providedTitle || 'GitHub Actions Notification',
-          weight: 'bolder',
-          size: 'medium'
-        }
-      ];
-      if (message) {
-        bodyElements.push({
-          type: 'TextBlock',
-          text: message,
-          spacing: 'medium'
-        });
-      }
-      bodyElements.push({
-        type: 'TextBlock',
-        text: 'Details:',
-        weight: 'bolder',
-        spacing: 'medium'
-      });
-      bodyElements.push({
-        type: 'TextBlock',
-        text: '```' + safeDetails + '```',
-        fontType: 'monospace',
-        spacing: 'small'
-      });
+      const bodyElements = [tb(providedTitle || 'GitHub Actions Notification', { weight: 'bolder', size: 'medium' })];
+      if (message) bodyElements.push(tb(message, { spacing: 'medium' }));
+      bodyElements.push(tb('Details:', { weight: 'bolder', spacing: 'medium' }));
+      bodyElements.push(tb('```' + safeDetails + '```', { fontType: 'monospace', spacing: 'small' }));
       await sendCard(bodyElements, detailsUrl, webhookUrl);
     } else if (details) {
       const safeDetails = details.replace(/```/g, '`` `');
-      const bodyElements = [
-        {
-          type: 'TextBlock',
-          text: providedTitle || 'GitHub Actions Notification',
-          weight: 'bolder',
-          size: 'medium'
-        }
-      ];
-      if (message) {
-        bodyElements.push({
-          type: 'TextBlock',
-          text: message,
-          spacing: 'medium'
-        });
-      }
-      bodyElements.push({
-        type: 'TextBlock',
-        text: 'Details:',
-        weight: 'bolder',
-        spacing: 'medium'
-      });
-      bodyElements.push({
-        type: 'TextBlock',
-        text: '```' + safeDetails + '```',
-        fontType: 'monospace',
-        spacing: 'small'
-      });
+      const bodyElements = [tb(providedTitle || 'GitHub Actions Notification', { weight: 'bolder', size: 'medium' })];
+      if (message) bodyElements.push(tb(message, { spacing: 'medium' }));
+      bodyElements.push(tb('Details:', { weight: 'bolder', spacing: 'medium' }));
+      bodyElements.push(tb('```' + safeDetails + '```', { fontType: 'monospace', spacing: 'small' }));
       await sendCard(bodyElements, detailsUrl, webhookUrl);
     } else {
       // Fallback basic card when no structured data or details provided
-      const bodyElements = [
-        {
-          type: 'TextBlock',
-          text: providedTitle || 'GitHub Actions Notification',
-          weight: 'bolder',
-          size: 'medium'
-        }
-      ];
-      if (message) {
-        bodyElements.push({
-          type: 'TextBlock',
-          text: message,
-          spacing: 'medium'
-        });
-      }
+      const bodyElements = [tb(providedTitle || 'GitHub Actions Notification', { weight: 'bolder', size: 'medium' })];
+      if (message) bodyElements.push(tb(message, { spacing: 'medium' }));
       await sendCard(bodyElements, detailsUrl, webhookUrl);
     }
   } catch (err) {

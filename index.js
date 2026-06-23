@@ -218,6 +218,9 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
       });
       bodyElements.push(partLine);
 
+      // Split line between batch indicator and findings list
+      bodyElements.push(tb('---', { spacing: 'medium', isSubtle: true }));
+
       batch.forEach((result, idxInBatch) => {
         const globalIndex = start + idxInBatch;
         const findingFacts = createFindingFacts(result, isSarif);

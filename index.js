@@ -266,7 +266,7 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
 
       bodyElements.push({
         type: 'TextBlock',
-        text: `Part ${b + 1} of ${numBatches} ${sevName.toLowerCase()} findings`,
+        text: `Part ${b + 1} of ${numBatches} ${sevName.toUpperCase()} findings`,
         weight: 'bolder',
         spacing: 'medium'
       });
@@ -314,7 +314,7 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
       // Duplicate the Part context at the bottom for easy reference
       bodyElements.push({
         type: 'TextBlock',
-        text: `Part ${b + 1} of ${numBatches} ${sevName.toLowerCase()} findings`,
+        text: `Part ${b + 1} of ${numBatches} ${sevName.toUpperCase()} findings`,
         weight: 'bolder',
         spacing: 'medium'
       });

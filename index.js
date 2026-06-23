@@ -159,13 +159,43 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
     if (severityCounts[sev] !== undefined) severityCounts[sev]++;
     else severityCounts.UNKNOWN++;
   });
-  const summaryParts = [];
-  if (severityCounts.CRITICAL > 0) summaryParts.push(`${severityCounts.CRITICAL} 🔴 CRITICAL`);
-  if (severityCounts.HIGH > 0) summaryParts.push(`${severityCounts.HIGH} 🟠 HIGH`);
-  if (severityCounts.MEDIUM > 0) summaryParts.push(`${severityCounts.MEDIUM} MEDIUM`);
-  if (severityCounts.LOW > 0) summaryParts.push(`${severityCounts.LOW} LOW`);
-  if (severityCounts.UNKNOWN > 0) summaryParts.push(`${severityCounts.UNKNOWN} UNKNOWN`);
-  const summaryLine = `📊 Summary: ${summaryParts.join(' • ')} (Total: ${total})`;
+
+  // Build multi-line summary blocks (card width is limited, so avoid long single lines)
+  const summaryBlocks = [
+    {
+      type: 'TextBlock',
+      text: '📊 Summary',
+      weight: 'bolder',
+      spacing: 'medium'
+    }
+  ];
+  const highLineParts = [];
+  if (severityCounts.CRITICAL > 0) highLineParts.push(`${severityCounts.CRITICAL} 🔴 CRITICAL`);
+  if (severityCounts.HIGH > 0) highLineParts.push(`${severityCounts.HIGH} 🟠 HIGH`);
+  if (highLineParts.length > 0) {
+    summaryBlocks.push({
+      type: 'TextBlock',
+      text: highLineParts.join(' • '),
+      spacing: 'small'
+    });
+  }
+  const lowLineParts = [];
+  if (severityCounts.MEDIUM > 0) lowLineParts.push(`${severityCounts.MEDIUM} MEDIUM`);
+  if (severityCounts.LOW > 0) lowLineParts.push(`${severityCounts.LOW} LOW`);
+  if (severityCounts.UNKNOWN > 0) lowLineParts.push(`${severityCounts.UNKNOWN} UNKNOWN`);
+  if (lowLineParts.length > 0) {
+    summaryBlocks.push({
+      type: 'TextBlock',
+      text: lowLineParts.join(' • '),
+      spacing: 'small'
+    });
+  }
+  summaryBlocks.push({
+    type: 'TextBlock',
+    text: `Total: ${total} findings`,
+    spacing: 'small',
+    isSubtle: true
+  });
 
   const effectiveMax = maxPerCard > 0 ? maxPerCard : total;
   const numBatches = Math.ceil(total / effectiveMax);
@@ -192,12 +222,8 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
       });
     }
 
-    // Report summary on every chunked card
-    bodyElements.push({
-      type: 'TextBlock',
-      text: summaryLine,
-      spacing: 'medium'
-    });
+    // Report summary on every chunked card (multi-line for limited card width)
+    bodyElements.push(...summaryBlocks);
 
     if (numBatches > 1) {
       bodyElements.push({

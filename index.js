@@ -152,15 +152,6 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
     return;
   }
 
-  // Sort findings by severity (CRITICAL → HIGH → MEDIUM → LOW → UNKNOWN)
-  // so cards are grouped by severity while still respecting chunk limits
-  const severityPriority = { CRITICAL: 1, HIGH: 2, MEDIUM: 3, LOW: 4, UNKNOWN: 5 };
-  findings.sort((a, b) => {
-    const sa = getSeverity(a, isSarif);
-    const sb = getSeverity(b, isSarif);
-    return (severityPriority[sa] || 99) - (severityPriority[sb] || 99);
-  });
-
   // Pre-compute severity summary for all findings (shown on every card)
   const severityCounts = { CRITICAL: 0, HIGH: 0, MEDIUM: 0, LOW: 0, UNKNOWN: 0 };
   findings.forEach((result) => {
@@ -232,97 +223,116 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
     isSubtle: true
   });
 
-  const effectiveMax = maxPerCard > 0 ? maxPerCard : total;
-  const numBatches = Math.ceil(total / effectiveMax);
+  // Partition findings by severity so each group gets its own card(s)
+  const groups = { CRITICAL: [], HIGH: [], MEDIUM: [], LOW: [], UNKNOWN: [] };
+  findings.forEach((result) => {
+    const sev = getSeverity(result, isSarif);
+    (groups[sev] || groups.UNKNOWN).push(result);
+  });
 
-  for (let b = 0; b < numBatches; b++) {
-    const start = b * effectiveMax;
-    const end = Math.min(start + effectiveMax, total);
-    const batch = findings.slice(start, end);
+  const orderedSevs = ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW', 'UNKNOWN'];
+  let isFirstGroup = true;
 
-    const bodyElements = [
-      {
-        type: 'TextBlock',
-        text: finalTitle,
-        weight: 'bolder',
-        size: 'medium'
-      }
-    ];
+  // Inner function: send cards for one severity group (respects maxPerCard chunking)
+  async function sendGroup(groupFindings, sevName) {
+    const groupTotal = groupFindings.length;
+    const effectiveMax = maxPerCard > 0 ? maxPerCard : groupTotal;
+    const numBatches = Math.ceil(groupTotal / effectiveMax);
 
-    if (message && b === 0) {
-      bodyElements.push({
-        type: 'TextBlock',
-        text: message,
-        spacing: 'medium'
-      });
-    }
+    for (let b = 0; b < numBatches; b++) {
+      const start = b * effectiveMax;
+      const end = Math.min(start + effectiveMax, groupTotal);
+      const batch = groupFindings.slice(start, end);
 
-    // Report summary on every chunked card (multi-line for limited card width)
-    bodyElements.push(...summaryBlocks);
+      const bodyElements = [
+        {
+          type: 'TextBlock',
+          text: finalTitle,
+          weight: 'bolder',
+          size: 'medium'
+        }
+      ];
 
-    if (numBatches > 1) {
-      bodyElements.push({
-        type: 'TextBlock',
-        text: `Part ${b + 1} of ${numBatches} findings`,
-        spacing: 'medium',
-        isSubtle: true
-      });
-    }
-
-    if (b === 0) {
-      bodyElements.push({
-        type: 'TextBlock',
-        text: `Findings (${total} total)`,
-        weight: 'bolder',
-        spacing: 'medium'
-      });
-    }
-
-    batch.forEach((result, idxInBatch) => {
-      const globalIndex = start + idxInBatch;
-      const findingFacts = createFindingFacts(result, isSarif);
-
-      const severityForStyle = getSeverity(result, isSarif);
-
-      if (globalIndex > 0) {
+      if (message && isFirstGroup && b === 0) {
         bodyElements.push({
           type: 'TextBlock',
-          text: '---',
+          text: message,
+          spacing: 'medium'
+        });
+      }
+
+      // Report summary on every chunked card (multi-line for limited card width)
+      bodyElements.push(...summaryBlocks);
+
+      if (numBatches > 1) {
+        bodyElements.push({
+          type: 'TextBlock',
+          text: `Part ${b + 1} of ${numBatches} findings`,
           spacing: 'medium',
           isSubtle: true
         });
       }
 
-      // Add colored severity indicator for CRITICAL and HIGH
-      if (severityForStyle === 'CRITICAL' || severityForStyle === 'HIGH') {
-        const indicatorColor = 'attention'; // red-ish in most renderers
-        const indicatorText = severityForStyle === 'CRITICAL' ? '🔴 CRITICAL' : '🟠 HIGH';
+      if (b === 0) {
         bodyElements.push({
           type: 'TextBlock',
-          text: indicatorText,
+          text: `Findings (${groupTotal} ${sevName.toLowerCase()})`,
           weight: 'bolder',
-          color: indicatorColor,
-          spacing: 'small'
+          spacing: 'medium'
         });
       }
 
-      bodyElements.push({
-        type: 'FactSet',
-        facts: findingFacts
+      batch.forEach((result, idxInBatch) => {
+        const globalIndex = start + idxInBatch;
+        const findingFacts = createFindingFacts(result, isSarif);
+        const severityForStyle = getSeverity(result, isSarif);
+
+        if (globalIndex > 0) {
+          bodyElements.push({
+            type: 'TextBlock',
+            text: '---',
+            spacing: 'medium',
+            isSubtle: true
+          });
+        }
+
+        if (severityForStyle === 'CRITICAL' || severityForStyle === 'HIGH') {
+          const indicatorColor = 'attention';
+          const indicatorText = severityForStyle === 'CRITICAL' ? '🔴 CRITICAL' : '🟠 HIGH';
+          bodyElements.push({
+            type: 'TextBlock',
+            text: indicatorText,
+            weight: 'bolder',
+            color: indicatorColor,
+            spacing: 'small'
+          });
+        }
+
+        bodyElements.push({
+          type: 'FactSet',
+          facts: findingFacts
+        });
       });
-    });
 
-    // Report summary at the bottom of each card as well
-    bodyElements.push({
-      type: 'TextBlock',
-      text: '---',
-      spacing: 'medium',
-      isSubtle: true
-    });
-    bodyElements.push(...summaryBlocks);
+      // Report summary at the bottom of each card as well
+      bodyElements.push({
+        type: 'TextBlock',
+        text: '---',
+        spacing: 'medium',
+        isSubtle: true
+      });
+      bodyElements.push(...summaryBlocks);
 
-    const logSuffix = numBatches > 1 ? ` (batch ${b + 1}/${numBatches})` : '';
-    await sendCard(bodyElements, detailsUrl, webhookUrl, logSuffix);
+      const logSuffix = numBatches > 1 ? ` (batch ${b + 1}/${numBatches})` : '';
+      await sendCard(bodyElements, detailsUrl, webhookUrl, logSuffix);
+    }
+    isFirstGroup = false;
+  }
+
+  for (const sev of orderedSevs) {
+    if (groups[sev].length > 0) {
+      await sendGroup(groups[sev], sev);
+    }
   }
 }
 

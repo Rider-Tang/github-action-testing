@@ -235,11 +235,28 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
   ];
 
   if (total === 0) {
+    // Build the summary explicitly as a FactSet for the empty case (consistent with non-empty)
+    const emptySummaryFactSet = factSet([
+      { title: '🔴 CRITICAL', value: '0' },
+      { title: '🟠 HIGH',     value: '0' },
+      { title: '🟡 MEDIUM',   value: '0' },
+      { title: '🟢 LOW',      value: '0' },
+      { title: '⚪ UNKNOWN',  value: '0' },
+      { title: 'TOTAL',       value: '**0**' }
+    ]);
+
+    const emptySummaryBlocks = [
+      tb('📊 Summary', { weight: 'bolder', spacing: 'medium' }),
+      ...(runId ? [tb(`Scan id: ${runId}`, { spacing: 'small', isSubtle: true })] : []),
+      tb(`Scan time: ${scanTimestamp}`, { spacing: 'small', isSubtle: true }),
+      emptySummaryFactSet
+    ];
+
     const bodyElements = [
       tb(finalTitle, { weight: 'bolder', size: 'medium' })
     ];
     if (message) bodyElements.push(tb(message, { spacing: 'medium' }));
-    bodyElements.push(...summaryBlocks);
+    bodyElements.push(...emptySummaryBlocks);
     bodyElements.push(tb('No vulnerabilities detected in this scan.', { spacing: 'medium', isSubtle: true }));
     await sendCard(bodyElements, detailsUrl, webhookUrl);
     return;

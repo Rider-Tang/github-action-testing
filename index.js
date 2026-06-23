@@ -267,8 +267,8 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
       bodyElements.push({
         type: 'TextBlock',
         text: `Part ${b + 1} of ${numBatches} ${sevName.toLowerCase()} findings`,
-        spacing: 'medium',
-        isSubtle: true
+        weight: 'bolder',
+        spacing: 'medium'
       });
 
       batch.forEach((result, idxInBatch) => {
@@ -315,8 +315,8 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
       bodyElements.push({
         type: 'TextBlock',
         text: `Part ${b + 1} of ${numBatches} ${sevName.toLowerCase()} findings`,
-        spacing: 'medium',
-        isSubtle: true
+        weight: 'bolder',
+        spacing: 'medium'
       });
 
       bodyElements.push(...summaryBlocks);

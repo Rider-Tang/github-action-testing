@@ -271,7 +271,7 @@ async function sendBatchedFindings(findings, finalTitle, message, detailsUrl, ma
       const batch = groupFindings.slice(start, end);
 
       const partPrefix = runId ? `${runId} - ` : '';
-      const partLine = tb(`${partPrefix}Part ${b + 1} of ${numBatches} ${sevName.toUpperCase()} findings`, {
+      const partLine = tb(`${partPrefix}${sevName.toUpperCase()} findings Part ${b + 1} of ${numBatches}`, {
         weight: 'bolder',
         spacing: 'medium'
       });
